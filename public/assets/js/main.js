@@ -6,6 +6,7 @@
   const $$ = (selector, scope = document) => [...scope.querySelectorAll(selector)];
 
   // Navigasi mobile yang bisa dipakai lewat klik, keyboard, dan screen reader.
+  const siteHeader = $('#siteHeader');
   const mobileMenuBtn = $('#mobileMenuBtn');
   const mobileMenu = $('#mobileMenu');
   if (mobileMenuBtn && mobileMenu) {
@@ -14,6 +15,13 @@
       mobileMenu.classList.toggle('hidden');
       mobileMenuBtn.setAttribute('aria-expanded', String(!isOpen));
       mobileMenuBtn.setAttribute('aria-label', isOpen ? 'Buka menu navigasi' : 'Tutup menu navigasi');
+      if (siteHeader) {
+        if (!isOpen) {
+          siteHeader.classList.add('nav-menu-open');
+        } else if (window.scrollY <= 50) {
+          siteHeader.classList.remove('nav-menu-open');
+        }
+      }
     });
 
     $$('a', mobileMenu).forEach((link) => {
@@ -21,6 +29,9 @@
         mobileMenu.classList.add('hidden');
         mobileMenuBtn.setAttribute('aria-expanded', 'false');
         mobileMenuBtn.setAttribute('aria-label', 'Buka menu navigasi');
+        if (siteHeader && window.scrollY <= 50) {
+          siteHeader.classList.remove('nav-menu-open');
+        }
       });
     });
   }
@@ -368,4 +379,35 @@
       }
     });
   });
+
+  // ─── Navbar dinamis: transparan di hero, solid saat di-scroll ───────────────
+  if (siteHeader) {
+    const isHome = document.body.getAttribute('data-page') === 'home' || !!document.querySelector('#beranda');
+    const NAV_THRESHOLD = 50;
+
+    if (!isHome) {
+      siteHeader.classList.add('nav-no-hero');
+    } else {
+      let ticking = false;
+      const updateNavbar = () => {
+        if (window.scrollY > NAV_THRESHOLD) {
+          siteHeader.classList.add('nav-scrolled');
+        } else {
+          siteHeader.classList.remove('nav-scrolled');
+          if (mobileMenu && mobileMenu.classList.contains('hidden')) {
+            siteHeader.classList.remove('nav-menu-open');
+          }
+        }
+        ticking = false;
+      };
+
+      window.addEventListener('scroll', () => {
+        if (!ticking) {
+          window.requestAnimationFrame(updateNavbar);
+          ticking = true;
+        }
+      }, { passive: true });
+      updateNavbar(); // jalankan saat halaman pertama dimuat
+    }
+  }
 })();
