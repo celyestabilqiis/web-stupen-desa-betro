@@ -26,7 +26,7 @@
     </span>
    </div>
   </div>
-  <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-100 shadow-2xs site-header">
+  <header class="sticky top-0 z-50 site-header" id="siteHeader">
    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex items-center justify-between h-20">
      <!-- KIRI: Logo Circle + Shield Icon + Title -->
@@ -36,16 +36,16 @@
        <img alt="Logo Desa Betro" class="village-logo-image" src="{{ asset('assets/images/logo-betro.png') }}"/>
       </div>
       <div>
-       <span class="block font-extrabold text-brand-700 text-lg sm:text-xl leading-tight tracking-tight">
+       <span class="block font-extrabold text-white text-lg sm:text-xl leading-tight tracking-tight">
         DESA BETRO
        </span>
-       <span class="block text-xs font-medium text-gray-500">
+       <span class="block text-xs font-medium text-white/70">
         Kecamatan Kemlagi &bull; Kabupaten Mojokerto
        </span>
       </div>
      </a>
      <!-- TENGAH: Menu Navigasi Horizontal Desktop -->
-     <nav class="hidden lg:flex items-center gap-8 text-sm font-semibold text-gray-600" data-primary-nav="true">
+     <nav class="hidden lg:flex items-center gap-8 text-sm font-semibold text-white/90" data-primary-nav="true">
       <a class="nav-link-active transition" href="{{ route('pages.home') }}#beranda">
        Beranda
       </a>
@@ -60,7 +60,7 @@
       <div class="relative group nav-dropdown py-2">
        <a class="hover:text-brand-700 transition inline-flex items-center gap-1.5" href="{{ route('pages.informasi') }}" id="navDropdownInformasi" aria-haspopup="true" aria-expanded="false">
         <span>Informasi</span>
-        <svg class="w-3.5 h-3.5 text-gray-400 group-hover:text-brand-700 group-hover:rotate-180 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg class="w-3.5 h-3.5 text-white/60 group-hover:text-white group-hover:rotate-180 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/>
         </svg>
        </a>
@@ -81,7 +81,7 @@
      </nav>
      <!-- Mobile Navigation Toggle -->
      <div class="lg:hidden flex items-center">
-      <button aria-controls="mobileMenu" aria-expanded="false" aria-label="Buka menu navigasi" class="p-2 rounded-xl text-gray-600 hover:text-gray-900 hover:bg-gray-100 focus:outline-none" id="mobileMenuBtn">
+      <button aria-controls="mobileMenu" aria-expanded="false" aria-label="Buka menu navigasi" class="p-2 rounded-xl text-white/90 hover:text-white hover:bg-white/15 focus:outline-none" id="mobileMenuBtn">
        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
         <path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
         </path>

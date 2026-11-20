@@ -6,23 +6,20 @@
 
 @section('content')
 <main class="home-main">
-   <section class="relative min-h-[580px] lg:min-h-[620px] flex items-center overflow-hidden bg-gray-900" id="beranda">
+   <section class="relative min-h-screen flex items-center overflow-hidden bg-gray-900" id="beranda">
     <!-- Landscape Background Image: Rice fields & mountain view -->
     <img alt="Persawahan Desa Betro" class="absolute inset-0 w-full h-full object-cover object-center" src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&amp;w=1920&amp;auto=format&amp;fit=crop"/>
     <!-- Smooth Gradient Overlay -->
-    <div class="absolute inset-0 hero-overlay sm:w-4/5 lg:w-3/5">
-    </button>
-    <div class="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent">
-    </div>
-    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24 w-full">
+    <div class="absolute inset-0 hero-overlay"></div>
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 sm:pt-36 lg:pt-40 pb-20 lg:pb-24 w-full z-10">
      <div class="max-w-2xl">
       <!-- Judul Utama -->
-      <h1 class="home-hero-title text-3xl sm:text-4xl lg:text-5xl font-extrabold text-gray-900 leading-[1.15] tracking-tight mb-4">
+      <h1 class="home-hero-title text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white leading-[1.15] tracking-tight mb-4">
        <span class="home-title-line home-title-line-main">Selamat Datang di Website Resmi</span>
        <span class="home-title-line home-title-line-accent">Desa Betro</span>
       </h1>
       <!-- Subtitle -->
-      <p class="text-base sm:text-lg text-gray-700 font-medium leading-relaxed mb-8 max-w-xl">
+      <p class="text-base sm:text-lg text-white/90 font-medium leading-relaxed mb-8 max-w-xl">
        Pusat informasi, pelayanan, dan keterbukaan Pemerintah Desa Betro untuk masyarakat.
       </p>
       <!-- Action CTA Buttons -->
@@ -449,10 +446,6 @@
        <span>
         Lihat Semua
        </span>
-       <svg class="w-4 h-4 transform group-hover:translate-x-1 transition" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-        <path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
-        </path>
-       </svg>
       </a>
      </div>
      <!-- Grid 3 Kartu Berita -->
@@ -483,14 +476,6 @@
           Pemerintah Desa Betro bersama masyarakat melaksanakan kegiatan kerja bakti lingkungan...
          </p>
         </div>
-        <div class="flex justify-end pt-2">
-         <div class="text-gray-400 group-hover:text-brand-700 transition">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-           <path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
-           </path>
-          </svg>
-         </div>
-        </div>
        </div>
       </article>
       <!-- Berita 2 -->
@@ -518,14 +503,6 @@
          <p class="text-xs sm:text-sm text-gray-500 leading-relaxed mb-4 line-clamp-2">
           Sektor pertanian khususnya padi menjadi salah satu potensi utama yang terus dikembangkan...
          </p>
-        </div>
-        <div class="flex justify-end pt-2">
-         <div class="text-gray-400 group-hover:text-brand-700 transition">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-           <path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
-           </path>
-          </svg>
-         </div>
         </div>
        </div>
       </article>
@@ -555,13 +532,6 @@
           Pemerintah Desa Betro menggelar musyawarah desa untuk membahas rencana pembangunan...
          </p>
         </div>
-        <div class="flex justify-end pt-2">
-         <div class="text-gray-400 group-hover:text-brand-700 transition">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-           <path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
-           </path>
-          </svg>
-         </div>
         </div>
        </div>
       </article>

@@ -4,6 +4,20 @@
 @section('description', 'Profil perangkat Desa Betro, struktur organisasi, jabatan, dan tugas contoh. Seluruh nama adalah data dummy yang perlu disesuaikan.')
 @section('page-key', 'profile')
 
+@php
+    /**
+     * PENGATURAN GAMBAR HERO PROFIL DESA:
+     * Untuk mengganti gambar/foto di samping judul "Kenali Perangkat Desa Betro":
+     * 1. Cukup ganti file di: public/images/profil-hero.jpg (atau public/assets/images/profil-hero.jpg)
+     * 2. Atau ubah path file di bawah ini ke file gambar lain (format: JPG, PNG, WebP, SVG)
+     */
+    $profileHeroImage = file_exists(public_path('images/profil-hero.jpg')) 
+        ? asset('images/profil-hero.jpg') 
+        : (file_exists(public_path('assets/images/profil-hero.jpg')) 
+            ? asset('assets/images/profil-hero.jpg') 
+            : asset('assets/images/profil-hero.svg'));
+@endphp
+
 @section('content')
 <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-12 site-main profile-page">
    <nav aria-label="Breadcrumb" class="page-breadcrumb">
@@ -20,15 +34,15 @@
       <a class="profile-button-secondary" href="{{ route('pages.potensi') }}">Jelajahi Potensi Desa </a>
      </div>
     </div>
-    <div class="profile-hero-visual" aria-label="Ilustrasi struktur perangkat desa">
-     <div class="profile-visual-orbit orbit-one"></div><div class="profile-visual-orbit orbit-two"></div>
-     <div class="profile-visual-stamp"><span class="profile-stamp-icon" aria-hidden="true">⌂</span><span>LAYANAN<br/>UNTUK WARGA</span></div>
-     <div class="profile-visual-building">
-      <div class="profile-building-roof"></div><div class="profile-building-attic">BETRO</div>
-      <div class="profile-building-front"><span></span><span></span><span></span><span></span><div class="profile-building-door"></div></div>
-      <div class="profile-building-steps"></div>
+    
+    <div class="profile-hero-visual" aria-label="Foto Pemerintah Desa Betro">
+     <!-- Gambar Hero Profil Desa -->
+     <div class="profile-hero-image-box">
+      <img src="{{ $profileHeroImage }}"
+          alt="Pemerintah Desa Betro"
+          class="profile-hero-image"
+          loading="eager" />
      </div>
-     <div class="profile-visual-caption"><span class="profile-caption-dot"></span><div><strong>Pemerintah Desa Betro</strong><small>Kecamatan Kemlagi · Kabupaten Mojokerto</small></div></div>
     </div>
    </section>
 
