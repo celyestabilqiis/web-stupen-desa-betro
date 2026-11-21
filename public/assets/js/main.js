@@ -61,25 +61,38 @@
     potensi: '/potensi',
     informasi: '/informasi',
     'informasi-statistik': '/informasi/statistik',
-    'informasi-dokumen': '/informasi/dokumen',
-    'informasi-kegiatan': '/informasi/kegiatan',
+    'informasi-dokumen': '/arsip-dokumentasi',
+    'informasi-kegiatan': '/arsip-dokumentasi',
+    'arsip-dokumentasi': '/arsip-dokumentasi',
+    'arsip-detail': '/arsip-dokumentasi',
     profile: '/profile',
     pengaduan: '/pengaduan',
     login: '/login'
   };
-  const activePath = hrefMap[page] || '/';
-  $$('header nav a, [data-mobile-nav] a').forEach((link) => {
-    const href = link.getAttribute('href') || '';
-    const linkUrl = new URL(href, window.location.href);
-    const isCurrent = (linkUrl.pathname === activePath || (page.startsWith('informasi') && linkUrl.pathname === '/informasi' && !link.closest('.dropdown-menu') && !link.closest('#mobileSubmenu'))) && (page !== 'home' || linkUrl.hash === '#beranda');
-    if (isCurrent) {
-      link.classList.add('nav-link-active');
-      link.setAttribute('aria-current', 'page');
-    } else {
-      link.classList.remove('nav-link-active');
-      link.removeAttribute('aria-current');
-    }
-  });
+  const isInformasiPage = page.startsWith('informasi') || page.startsWith('arsip');
+  const activePath = hrefMap[page] || null;
+
+  if (activePath) {
+    $$('header nav a, [data-mobile-nav] a').forEach((link) => {
+      // Abaikan tombol Admin Panel
+      if (link.getAttribute('href')?.includes('/admin')) return;
+
+      const href = link.getAttribute('href') || '';
+      const linkUrl = new URL(href, window.location.href);
+      const isParentInformasi = isInformasiPage && linkUrl.pathname === '/informasi' && !link.closest('.dropdown-menu') && !link.closest('#mobileSubmenu');
+      const isSubmenuItem = (page === 'informasi-statistik' && linkUrl.pathname === '/informasi/statistik') ||
+                            ((page === 'arsip-dokumentasi' || page === 'arsip-detail') && linkUrl.pathname === '/arsip-dokumentasi');
+
+      const isCurrent = (linkUrl.pathname === activePath || isParentInformasi || isSubmenuItem) && (page !== 'home' || linkUrl.hash === '#beranda');
+      if (isCurrent) {
+        link.classList.add('nav-link-active');
+        link.setAttribute('aria-current', 'page');
+      } else {
+        link.classList.remove('nav-link-active');
+        link.removeAttribute('aria-current');
+      }
+    });
+  }
 
   const umkmDialog = $('#umkmDetailDialog');
   if (umkmDialog) {

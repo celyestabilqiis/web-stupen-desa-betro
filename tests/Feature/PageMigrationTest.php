@@ -2,10 +2,15 @@
 
 namespace Tests\Feature;
 
+use App\Models\Arsip;
+use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class PageMigrationTest extends TestCase
 {
+    use RefreshDatabase;
+
     public function test_migrated_pages_render_with_the_shared_layout(): void
     {
         $pages = [
@@ -13,6 +18,7 @@ class PageMigrationTest extends TestCase
             'pages.informasi' => 'Pusat Informasi',
             'pages.potensi' => 'Potensi Lokal',
             'pages.profile' => 'Profil Perangkat Desa',
+            'pages.pengaduan' => 'Pengaduan Desa Betro',
         ];
 
         foreach ($pages as $route => $content) {
@@ -44,14 +50,10 @@ class PageMigrationTest extends TestCase
             ->assertOk()
             ->assertSee('Informasi Desa')
             ->assertSee('Statistik Desa')
-            ->assertSee('Publikasi Dokumen')
-            ->assertSee('Dokumentasi Kegiatan Desa')
+            ->assertSee('Arsip &amp; Dokumentasi Desa', false)
             ->assertSee('2.630')
-            ->assertSee('Ringkasan APBDes 2026')
-            ->assertSee('Musrenbang Desa 2026')
             ->assertSee(route('pages.informasi.statistik'))
-            ->assertSee(route('pages.informasi.dokumen'))
-            ->assertSee(route('pages.informasi.kegiatan'));
+            ->assertSee(route('pages.arsip.index'));
     }
 
     public function test_potensi_page_only_shows_umkm_and_business_permit_content(): void
@@ -73,8 +75,7 @@ class PageMigrationTest extends TestCase
             ->assertOk()
             ->assertSee('id="navDropdownInformasi"', false)
             ->assertSee(route('pages.informasi.statistik'))
-            ->assertSee(route('pages.informasi.dokumen'))
-            ->assertSee(route('pages.informasi.kegiatan'))
+            ->assertSee(route('pages.arsip.index'))
             ->assertSee('id="mobileDropdownBtn"', false)
             ->assertSee('id="mobileSubmenu"', false);
     }
@@ -84,7 +85,7 @@ class PageMigrationTest extends TestCase
         $this->get(route('pages.informasi'))
             ->assertOk()
             ->assertSee('Pusat Informasi')
-            ->assertSee('Kabar &amp; Berita Terkini Desa Betro', false)
+            ->assertSee('Arsip &amp; Dokumentasi Desa Terbaru', false)
             ->assertDontSee('id="statistik-desa"', false)
             ->assertDontSee('id="publikasi-dokumen"', false)
             ->assertDontSee('id="dokumentasi-kegiatan"', false);
@@ -98,22 +99,117 @@ class PageMigrationTest extends TestCase
             ->assertSee('2.630')
             ->assertSee('site-header');
 
-        $this->get(route('pages.informasi.dokumen'))
+        $this->get(route('pages.arsip.index'))
             ->assertOk()
-            ->assertSee('Publikasi Dokumen Resmi')
-            ->assertSee('Ringkasan APBDes 2026')
-            ->assertSee('site-header');
-
-        $this->get(route('pages.informasi.kegiatan'))
-            ->assertOk()
-            ->assertSee('Dokumentasi Kegiatan Desa')
-            ->assertSee('Musrenbang Desa 2026')
+            ->assertSee('Arsip')
             ->assertSee('site-header');
     }
 
-    public function test_removed_pages_redirect_to_their_new_locations(): void
+    public function test_legacy_redirects_work(): void
     {
         $this->get('/layanan')->assertRedirect('/#informasi');
         $this->get('/pemerintahan')->assertRedirect('/potensi#izin-usaha');
+        $this->get('/informasi/dokumen')->assertRedirect('/arsip-dokumentasi');
+        $this->get('/informasi/kegiatan')->assertRedirect('/arsip-dokumentasi');
+        $this->get('/publikasi-dokumen')->assertRedirect('/arsip-dokumentasi');
+        $this->get('/dokumentasi-kegiatan')->assertRedirect('/arsip-dokumentasi');
+    }
+
+    public function test_admin_panel_button_visibility_in_navbar(): void
+    {
+        // 1. Pengunjung tamu tidak melihat tombol Admin Panel
+        $this->get(route('pages.home'))
+            ->assertOk()
+            ->assertDontSee('Admin Panel')
+            ->assertDontSee(route('admin.dashboard'));
+
+        // 2. Admin yang login melihat tombol Admin Panel
+        $admin = User::factory()->create();
+        $this->actingAs($admin)
+            ->get(route('pages.home'))
+            ->assertOk()
+            ->assertSee('Admin Panel')
+            ->assertSee(route('admin.dashboard'));
+
+        // 3. Setelah logout, tombol Admin Panel tidak muncul lagi
+        $this->post(route('admin.logout'))
+            ->assertRedirect(route('login'));
+
+        $this->get(route('pages.home'))
+            ->assertOk()
+            ->assertDontSee('Admin Panel')
+            ->assertDontSee(route('admin.dashboard'));
+    }
+
+    public function test_navbar_active_state_on_homepage(): void
+    {
+        $response = $this->get(route('pages.home'))->assertOk();
+
+        // Beranda aktif
+        $response->assertSee('nav-link-active', false);
+        $response->assertSee('href="'.route('pages.home').'#beranda"', false);
+
+        // Informasi tidak aktif
+        $response->assertDontSee('class="nav-link-active transition inline-flex items-center gap-1.5" href="'.route('pages.informasi').'" id="navDropdownInformasi"', false);
+    }
+
+    public function test_navbar_active_state_on_arsip_pages(): void
+    {
+        $arsip = Arsip::factory()->terbit()->create([
+            'judul' => 'Uji Aktivasi Menu Informasi',
+        ]);
+
+        // Daftar Arsip
+        $responseList = $this->get(route('pages.arsip.index'))->assertOk();
+        $responseList->assertSee('class="nav-link-active transition inline-flex items-center gap-1.5" href="'.route('pages.informasi').'" id="navDropdownInformasi"', false);
+        $responseList->assertSee('href="'.route('pages.arsip.index').'" class="dropdown-item nav-link-active"', false);
+        $responseList->assertDontSee('<a class="nav-link-active transition" aria-current="page" href="'.route('pages.home').'#beranda">', false);
+
+        // Detail Arsip
+        $responseDetail = $this->get(route('pages.arsip.show', $arsip->slug))->assertOk();
+        $responseDetail->assertSee('class="nav-link-active transition inline-flex items-center gap-1.5" href="'.route('pages.informasi').'" id="navDropdownInformasi"', false);
+        $responseDetail->assertSee('href="'.route('pages.arsip.index').'" class="dropdown-item nav-link-active"', false);
+        $responseDetail->assertDontSee('<a class="nav-link-active transition" aria-current="page" href="'.route('pages.home').'#beranda">', false);
+    }
+
+    public function test_admin_sidebar_and_table_links_do_not_open_new_tab_for_articles(): void
+    {
+        $admin = User::factory()->create();
+        $artikel = Arsip::factory()->terbit()->create(['tipe' => 'artikel']);
+        $pdf = Arsip::factory()->terbit()->pdf()->create();
+
+        // Sidebar link Lihat Website Publik tidak memiliki target="_blank"
+        $this->actingAs($admin)
+            ->get(route('admin.dashboard'))
+            ->assertOk()
+            ->assertDontSee('href="'.route('pages.home').'" target="_blank"', false)
+            ->assertSee('href="'.route('pages.home').'" class="flex items-center gap-3', false);
+
+        // Tabel Arsip: artikel tidak membuka tab baru, PDF membuka tab baru
+        $this->actingAs($admin)
+            ->get(route('admin.arsip.index'))
+            ->assertOk()
+            ->assertSee('href="'.route('pages.arsip.show', $artikel->slug).'" class="p-1.5 text-gray-400', false)
+            ->assertSee('href="'.route('pages.arsip.show', $pdf->slug).'" target="_blank" rel="noopener" class="p-1.5 text-gray-400', false);
+    }
+
+    public function test_navbar_on_pengaduan_page_has_dropdown_and_active_state(): void
+    {
+        $response = $this->get(route('pages.pengaduan'))->assertOk();
+
+        // Menu Pengaduan bertanda aktif
+        $response->assertSee('nav-link-active', false);
+        $response->assertSee('href="'.route('pages.pengaduan').'"', false);
+
+        // Markup dropdown Informasi beserta item Statistik Desa dan Arsip & Dokumentasi Desa tetap ada
+        $response->assertSee('id="navDropdownInformasi"', false);
+        $response->assertSee('href="'.route('pages.informasi.statistik').'"', false);
+        $response->assertSee('Statistik Desa');
+        $response->assertSee('href="'.route('pages.arsip.index').'"', false);
+        $response->assertSee('Arsip &amp; Dokumentasi Desa', false);
+
+        // Header dan footer bersama tampil pada halaman pengaduan
+        $response->assertSee('site-header');
+        $response->assertSee('village-footer');
     }
 }

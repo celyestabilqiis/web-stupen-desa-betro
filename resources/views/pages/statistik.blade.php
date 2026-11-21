@@ -32,7 +32,7 @@
       <a class="inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-xs sm:text-sm font-bold text-brand-800 shadow-sm transition hover:bg-brand-50" href="#ringkasan-statistik">
        Lihat Data Lengkap &darr;
       </a>
-      <a class="inline-flex items-center gap-2 rounded-full bg-brand-900/60 border border-white/20 px-5 py-2.5 text-xs sm:text-sm font-semibold text-white transition hover:bg-brand-800" href="{{ route('pages.informasi.dokumen') }}">
+      <a class="inline-flex items-center gap-2 rounded-full bg-brand-900/60 border border-white/20 px-5 py-2.5 text-xs sm:text-sm font-semibold text-white transition hover:bg-brand-800" href="{{ route('pages.arsip.index') }}">
        Unduh Buku Profil Desa 
       </a>
      </div>
@@ -220,7 +220,7 @@
 
      <div class="mt-6 pt-5 border-t border-gray-100 flex items-center justify-between">
       <span class="text-xs text-gray-500">Sumber data: Laporan Tahunan Desa Betro</span>
-      <a href="{{ route('pages.potensi') }}" class="text-xs font-bold text-brand-700 hover:underline">
+      <a href="{{ route('pages.potensi') }}" class="text-xs font-bold text-brand-700 hover:text-brand-900 transition">
        Lihat Sektor UMKM 
       </a>
      </div>

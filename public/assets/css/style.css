@@ -48,8 +48,36 @@ body.modal-open {
 }
 
 :focus-visible {
-  outline: 3px solid rgba(215, 173, 83, .85);
-  outline-offset: 3px;
+  outline: 2px solid rgba(215, 173, 83, .85);
+  outline-offset: 2px;
+}
+
+/* Aksesibilitas: Reset outline/kotak fokus saat klik mouse, pertahankan indikator fokus untuk navigasi keyboard (:focus-visible) */
+a:focus:not(:focus-visible),
+button:focus:not(:focus-visible),
+input:focus:not(:focus-visible),
+select:focus:not(:focus-visible),
+textarea:focus:not(:focus-visible) {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Hilangkan garis bawah default pada tautan dan tombol di seluruh halaman */
+a:not(.tiptap-content a):not(.tiptap a),
+button {
+  text-decoration: none;
+}
+
+a:not(.tiptap-content a):not(.tiptap a):hover,
+button:hover {
+  text-decoration: none;
+}
+
+/* Tautan di dalam isi artikel tetap mempertahankan garis bawah */
+.tiptap-content a,
+.tiptap a {
+  text-decoration: underline;
+  text-underline-offset: 2px;
 }
 
 ::-webkit-scrollbar {
@@ -268,13 +296,14 @@ body[data-page="home"] .site-header.nav-scrolled a>div:nth-child(2) span:first-c
   text-decoration: none;
 }
 
-.site-header nav a {
+.site-header nav a:not(.nav-admin-btn):not(.dropdown-item) {
   position: relative;
   color: rgba(255, 255, 255, 0.90) !important;
-  font-size: 14px !important;
-  font-weight: 700 !important;
+  font-size: 14px;
+  font-weight: 700;
   padding: 12px 9px;
   border-radius: 8px;
+  text-decoration: none !important;
   transition: color .2s ease, background .2s ease;
 }
 
@@ -282,13 +311,23 @@ body[data-page="home"] .site-header.nav-scrolled a>div:nth-child(2) span:first-c
   gap: 14px !important;
 }
 
-.site-header nav a:hover {
+.site-header nav a:not(.nav-admin-btn):not(.dropdown-item):hover,
+.site-header nav a:not(.nav-admin-btn):not(.dropdown-item):focus {
   background: rgba(255, 255, 255, 0.12);
+  color: #ffffff !important;
+  text-decoration: none !important;
 }
 
-.site-header nav a.nav-link-active {
+.site-header nav a:not(.nav-admin-btn):not(.dropdown-item).nav-link-active {
   background: rgba(255, 255, 255, 0.14);
-  box-shadow: inset 0 -2px 0 var(--color-gold);
+  color: #ffffff !important;
+  text-decoration: none !important;
+}
+
+.site-header nav a:not(.nav-admin-btn):not(.dropdown-item).nav-link-active:hover,
+.site-header nav a:not(.nav-admin-btn):not(.dropdown-item).nav-link-active:focus {
+  background: rgba(255, 255, 255, 0.20);
+  color: #ffffff !important;
 }
 
 .site-header a>div:nth-child(2) span:first-child {
@@ -302,24 +341,95 @@ body[data-page="home"] .site-header.nav-scrolled a>div:nth-child(2) span:first-c
   color: rgba(255, 255, 255, 0.70) !important;
 }
 
-.site-header nav a:hover,
-.site-header nav a.nav-link-active {
-  color: #fff !important;
+.site-header .nav-link-active:not(.dropdown-item):not(.nav-admin-btn) {
+  color: #ffffff !important;
+  text-decoration: none !important;
 }
 
-.site-header nav a.nav-link-active::after {
-  content: '';
-  position: absolute;
-  height: 2px;
-  left: 9px;
-  right: 9px;
-  bottom: 4px;
-  border-radius: 2px;
-  background: var(--color-gold);
+/* Tombol Admin Panel Navbar (Desktop & Mobile) */
+.nav-admin-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 9999px;
+  background-color: #ffffff;
+  color: var(--color-primary, #801b2a) !important;
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: none !important;
+  border: 1px solid rgba(128, 27, 42, 0.15);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
 }
 
-.site-header .nav-link-active {
-  color: #fff !important;
+.nav-admin-btn svg {
+  color: var(--color-primary, #801b2a);
+  stroke: currentColor;
+}
+
+.nav-admin-btn:hover {
+  background-color: #f7eded;
+  color: #6d1523 !important;
+  text-decoration: none !important;
+}
+
+.nav-admin-btn:hover svg {
+  color: #6d1523;
+}
+
+.nav-admin-btn:active {
+  background-color: #eddcdc;
+  color: #57121d !important;
+  transform: scale(0.98);
+}
+
+.nav-admin-btn:focus-visible {
+  outline: 2px solid var(--color-gold, #d7ad53) !important;
+  outline-offset: 2px;
+}
+
+.nav-admin-btn-mobile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background-color: #ffffff;
+  color: var(--color-primary, #801b2a) !important;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none !important;
+  border: 1.5px solid #dfc1c1;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  transition: all 0.2s ease;
+}
+
+.nav-admin-btn-mobile svg {
+  color: var(--color-primary, #801b2a);
+  stroke: currentColor;
+}
+
+.nav-admin-btn-mobile:hover {
+  background-color: #f7eded;
+  color: #6d1523 !important;
+  border-color: #cb9b9b;
+  text-decoration: none !important;
+}
+
+.nav-admin-btn-mobile:hover svg {
+  color: #6d1523;
+}
+
+.nav-admin-btn-mobile:active {
+  background-color: #eddcdc;
+  color: #57121d !important;
+}
+
+.nav-admin-btn-mobile:focus-visible {
+  outline: 2px solid var(--color-gold, #d7ad53) !important;
+  outline-offset: 2px;
 }
 
 .site-header button[onclick*="pengaduanModal"] {
@@ -343,6 +453,27 @@ body[data-page="home"] .site-header.nav-scrolled a>div:nth-child(2) span:first-c
 }
 
 /* Submenu Dropdown Navigasi Informasi */
+.site-header nav .nav-dropdown {
+  position: relative;
+}
+
+.site-header nav .dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 70 !important;
+}
+
+/* Jembatan tak terlihat agar kursor tidak kehilangan hover saat bergerak ke dropdown */
+.site-header nav .dropdown-menu::before {
+  content: '';
+  position: absolute;
+  top: -10px;
+  left: 0;
+  right: 0;
+  height: 10px;
+}
+
 .site-header nav .dropdown-menu>div {
   background: #ffffff !important;
   border-radius: 8px !important;
@@ -895,7 +1026,8 @@ section .rounded-3xl.border {
 }
 
 .page-breadcrumb a:hover {
-  text-decoration: underline;
+  text-decoration: none;
+  opacity: 0.85;
 }
 
 .page-hero {
@@ -3770,7 +3902,7 @@ body[data-page="informasi"] .section-separator h2 {
 
 .auth-label-row a:hover {
   color: var(--color-primary-deep) !important;
-  text-decoration: underline;
+  text-decoration: none;
 }
 
 .auth-input-wrap {
@@ -4188,20 +4320,3 @@ body[data-page="informasi"] .section-separator h2 {
 }
 
 
-/* Tautan aktif pada navbar, termasuk Pengaduan */
-.site-header a.nav-link-active {
-  color: var(--color-primary) !important;
-  background: rgba(180, 35, 53, .07);
-  box-shadow: inset 0 -2px 0 var(--color-gold);
-}
-
-.site-header a.nav-link-active::after {
-  content: '';
-  position: absolute;
-  height: 2px;
-  left: 9px;
-  right: 9px;
-  bottom: 4px;
-  border-radius: 2px;
-  background: var(--color-gold);
-}

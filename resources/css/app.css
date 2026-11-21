@@ -2,8 +2,295 @@
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
+@source '../../resources/views/**/*.blade.php';
+@source '../../resources/js/**/*.js';
 
 @theme {
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
+    --color-brand-50: #fbf6f6;
+    --color-brand-100: #f7eded;
+    --color-brand-200: #eddcdc;
+    --color-brand-300: #dfc1c1;
+    --color-brand-400: #cb9b9b;
+    --color-brand-500: #b46b6b;
+    --color-brand-600: #9e4646;
+    --color-brand-700: #801b2a;
+    --color-brand-800: #6d1523;
+    --color-brand-900: #57121d;
+    --color-brand-950: #380710;
+    --color-gold: #d7ad53;
+}
+
+/* TipTap Editor & Artikel Content Styling */
+.tiptap-content,
+.tiptap {
+    outline: none;
+}
+
+.tiptap-content h1,
+.tiptap h1 {
+    font-size: 2rem;
+    font-weight: 800;
+    line-height: 1.25;
+    margin-top: 1.75rem;
+    margin-bottom: 0.75rem;
+    color: #111827;
+}
+
+.tiptap-content h2,
+.tiptap h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1.3;
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+    color: #1f2937;
+}
+
+.tiptap-content h3,
+.tiptap h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    line-height: 1.4;
+    margin-top: 1.25rem;
+    margin-bottom: 0.5rem;
+    color: #374151;
+}
+
+.tiptap-content p,
+.tiptap p {
+    font-size: 1.025rem;
+    line-height: 1.8;
+    margin-top: 0.75rem;
+    margin-bottom: 0.75rem;
+    color: #374151;
+}
+
+.tiptap-content ul,
+.tiptap ul {
+    list-style-type: disc;
+    padding-left: 1.5rem;
+    margin-top: 0.75rem;
+    margin-bottom: 0.75rem;
+    color: #374151;
+}
+
+.tiptap-content ol,
+.tiptap ol {
+    list-style-type: decimal;
+    padding-left: 1.5rem;
+    margin-top: 0.75rem;
+    margin-bottom: 0.75rem;
+    color: #374151;
+}
+
+.tiptap-content li,
+.tiptap li {
+    margin-top: 0.25rem;
+    margin-bottom: 0.25rem;
+    line-height: 1.7;
+}
+
+.tiptap-content blockquote,
+.tiptap blockquote {
+    border-left: 4px solid var(--color-brand-700);
+    padding-left: 1.25rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    margin-top: 1.25rem;
+    margin-bottom: 1.25rem;
+    background-color: #fafafa;
+    border-radius: 0 0.5rem 0.5rem 0;
+    color: #4b5563;
+    font-style: italic;
+}
+
+.tiptap-content hr,
+.tiptap hr {
+    border: 0;
+    border-top: 1px solid #e5e7eb;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+
+.tiptap-content img,
+.tiptap img {
+    border-radius: 0.75rem;
+    max-width: 100%;
+    height: auto;
+    margin-top: 1.25rem;
+    margin-bottom: 1.25rem;
+}
+
+.tiptap-table-wrapper {
+    overflow-x: auto;
+    width: 100%;
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.tiptap-content table,
+.tiptap table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.tiptap-content th,
+.tiptap th {
+    background-color: #f9fafb;
+    border: 1px solid #e5e7eb;
+    padding: 0.75rem 1rem;
+    font-weight: 600;
+    text-align: left;
+    color: #111827;
+}
+
+.tiptap-content td,
+.tiptap td {
+    border: 1px solid #e5e7eb;
+    padding: 0.75rem 1rem;
+    color: #374151;
+}
+
+/* ==========================================================================
+   Global Link & Button Styling (No Underline, Clean Focus for Mouse)
+   ========================================================================== */
+
+/* Navbar Desktop Navigation Links: Teks selalu putih, aktif dengan sorotan transparan */
+.site-header nav a:not(.nav-admin-btn):not(.dropdown-item) {
+    color: rgba(255, 255, 255, 0.90) !important;
+}
+
+.site-header nav a:not(.nav-admin-btn):not(.dropdown-item):hover,
+.site-header nav a:not(.nav-admin-btn):not(.dropdown-item):focus,
+.site-header nav a:not(.nav-admin-btn):not(.dropdown-item).nav-link-active {
+    color: #ffffff !important;
+}
+
+.site-header .nav-link-active:not(.dropdown-item):not(.nav-admin-btn) {
+    color: #ffffff !important;
+}
+
+/* Hilangkan garis bawah default dan hover di seluruh website */
+a:not(.tiptap-content a):not(.tiptap a),
+button {
+    text-decoration: none;
+}
+
+a:not(.tiptap-content a):not(.tiptap a):hover,
+button:hover {
+    text-decoration: none;
+}
+
+/* Link di dalam isi artikel tetap bergaris bawah untuk kejelasan */
+.tiptap-content a,
+.tiptap a {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+/* Aksesibilitas: Hilangkan outline/kotak fokus saat diklik mouse,
+   namun pertahankan indikator fokus rapi hanya untuk navigasi keyboard (:focus-visible) */
+a:focus:not(:focus-visible),
+button:focus:not(:focus-visible),
+input:focus:not(:focus-visible),
+select:focus:not(:focus-visible),
+textarea:focus:not(:focus-visible) {
+    outline: none;
+    box-shadow: none;
+}
+
+a:focus-visible,
+button:focus-visible {
+    outline: 2px solid var(--color-gold, #d7ad53);
+    outline-offset: 2px;
+}
+
+/* Tombol Admin Panel Navbar (Desktop & Mobile) */
+.nav-admin-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.375rem 0.875rem;
+    border-radius: 9999px;
+    background-color: #ffffff;
+    color: var(--color-brand-700, #801b2a) !important;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-decoration: none !important;
+    border: 1px solid rgba(128, 27, 42, 0.15);
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    transition: all 0.2s ease;
+}
+
+.nav-admin-btn svg {
+    color: var(--color-brand-700, #801b2a);
+    stroke: currentColor;
+}
+
+.nav-admin-btn:hover {
+    background-color: #f7eded;
+    color: #6d1523 !important;
+    text-decoration: none !important;
+}
+
+.nav-admin-btn:hover svg {
+    color: #6d1523;
+}
+
+.nav-admin-btn:active {
+    background-color: #eddcdc;
+    color: #57121d !important;
+    transform: scale(0.98);
+}
+
+.nav-admin-btn:focus-visible {
+    outline: 2px solid var(--color-gold, #d7ad53) !important;
+    outline-offset: 2px;
+}
+
+.nav-admin-btn-mobile {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.625rem 0.875rem;
+    border-radius: 0.75rem;
+    background-color: #ffffff;
+    color: var(--color-brand-700, #801b2a) !important;
+    font-size: 0.875rem;
+    font-weight: 700;
+    text-decoration: none !important;
+    border: 1.5px solid #dfc1c1;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    transition: all 0.2s ease;
+}
+
+.nav-admin-btn-mobile svg {
+    color: var(--color-brand-700, #801b2a);
+    stroke: currentColor;
+}
+
+.nav-admin-btn-mobile:hover {
+    background-color: #f7eded;
+    color: #6d1523 !important;
+    border-color: #cb9b9b;
+    text-decoration: none !important;
+}
+
+.nav-admin-btn-mobile:hover svg {
+    color: #6d1523;
+}
+
+.nav-admin-btn-mobile:active {
+    background-color: #eddcdc;
+    color: #57121d !important;
+}
+
+.nav-admin-btn-mobile:focus-visible {
+    outline: 2px solid var(--color-gold, #d7ad53) !important;
+    outline-offset: 2px;
 }

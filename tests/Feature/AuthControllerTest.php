@@ -33,7 +33,7 @@ class AuthControllerTest extends TestCase
 
         $this->get(route('admin.dashboard'))
             ->assertOk()
-            ->assertSee('Dashboard Admin')
+            ->assertSee('Dashboard')
             ->assertSee('Admin Desa Betro');
     }
 

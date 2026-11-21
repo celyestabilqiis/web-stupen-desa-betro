@@ -45,20 +45,29 @@
       </div>
      </a>
      <!-- TENGAH: Menu Navigasi Horizontal Desktop -->
-     <nav class="hidden lg:flex items-center gap-8 text-sm font-semibold text-white/90" data-primary-nav="true">
-      <a class="nav-link-active transition" href="{{ route('pages.home') }}#beranda">
+     @php
+      $isHome = request()->routeIs('pages.home');
+      $isProfile = request()->routeIs('pages.profile');
+      $isPotensi = request()->routeIs('pages.potensi');
+      $isStatistik = request()->routeIs('pages.informasi.statistik') || request()->is('informasi/statistik*');
+      $isArsip = request()->routeIs('pages.arsip.*') || request()->is('arsip-dokumentasi*');
+      $isInformasi = request()->routeIs('pages.informasi', 'pages.informasi.*', 'pages.arsip.*') || request()->is('informasi*', 'arsip-dokumentasi*');
+      $isPengaduan = request()->routeIs('pages.pengaduan');
+     @endphp
+     <nav class="hidden lg:flex items-center gap-7 text-sm font-semibold text-white/90" data-primary-nav="true">
+      <a class="{{ $isHome ? 'nav-link-active' : 'hover:text-white' }} transition" @if($isHome) aria-current="page" @endif href="{{ route('pages.home') }}#beranda">
        Beranda
       </a>
-      <a class="hover:text-brand-700 transition" href="{{ route('pages.profile') }}">
+      <a class="{{ $isProfile ? 'nav-link-active' : 'hover:text-white' }} transition" @if($isProfile) aria-current="page" @endif href="{{ route('pages.profile') }}">
        Profil Desa
       </a>
-      <a class="hover:text-brand-700 transition" href="{{ route('pages.potensi') }}">
+      <a class="{{ $isPotensi ? 'nav-link-active' : 'hover:text-white' }} transition" @if($isPotensi) aria-current="page" @endif href="{{ route('pages.potensi') }}">
        Potensi Desa
       </a>
 
       <!-- Menu Informasi dengan Dropdown Submenu -->
       <div class="relative group nav-dropdown py-2">
-       <a class="hover:text-brand-700 transition inline-flex items-center gap-1.5" href="{{ route('pages.informasi') }}" id="navDropdownInformasi" aria-haspopup="true" aria-expanded="false">
+       <a class="{{ $isInformasi ? 'nav-link-active' : 'hover:text-white' }} transition inline-flex items-center gap-1.5" href="{{ route('pages.informasi') }}" id="navDropdownInformasi" aria-haspopup="true" aria-expanded="false" @if($isInformasi) aria-current="page" @endif>
         <span>Informasi</span>
         <svg class="w-3.5 h-3.5 text-white/60 group-hover:text-white group-hover:rotate-180 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/>
@@ -68,16 +77,24 @@
        <!-- Dropdown Menu Desktop -->
        <div class="dropdown-menu absolute left-0 top-full pt-1.5 w-60 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto group-focus-within:opacity-100 group-focus-within:pointer-events-auto transition-all duration-150 ease-out transform group-hover:translate-y-0 -translate-y-1 z-50">
         <div class="bg-white rounded-lg shadow-md border border-gray-100 py-1.5 ring-1 ring-black/5">
-         <a href="{{ route('pages.informasi.statistik') }}" class="dropdown-item">Statistik Desa</a>
-         <a href="{{ route('pages.informasi.dokumen') }}" class="dropdown-item">Publikasi Dokumen</a>
-         <a href="{{ route('pages.informasi.kegiatan') }}" class="dropdown-item">Dokumentasi Kegiatan Desa</a>
+         <a href="{{ route('pages.informasi.statistik') }}" class="dropdown-item {{ $isStatistik ? 'nav-link-active' : '' }}" @if($isStatistik) aria-current="page" @endif>Statistik Desa</a>
+         <a href="{{ route('pages.arsip.index') }}" class="dropdown-item {{ $isArsip ? 'nav-link-active' : '' }}" @if($isArsip) aria-current="page" @endif>Arsip &amp; Dokumentasi Desa</a>
         </div>
        </div>
       </div>
 
-      <a class="hover:text-brand-700 transition" href="{{ route('pages.pengaduan') }}">
+      <a class="{{ $isPengaduan ? 'nav-link-active' : 'hover:text-white' }} transition" @if($isPengaduan) aria-current="page" @endif href="{{ route('pages.pengaduan') }}">
        Pengaduan
       </a>
+
+      @auth
+       <a href="{{ route('admin.dashboard') }}" class="nav-admin-btn ml-1">
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/>
+        </svg>
+        <span>Admin Panel</span>
+       </a>
+      @endauth
      </nav>
      <!-- Mobile Navigation Toggle -->
      <div class="lg:hidden flex items-center">
@@ -92,45 +109,53 @@
    </div>
    <!-- Mobile Nav Drawer -->
    <div class="hidden lg:hidden border-t border-gray-100 bg-white px-4 pt-3 pb-6 space-y-2 shadow-lg" data-mobile-nav="true" id="mobileMenu">
-    <a class="block px-3.5 py-2.5 rounded-xl bg-brand-50 text-brand-700 font-bold" href="{{ route('pages.home') }}#beranda">
+    <a class="block px-3.5 py-2.5 rounded-xl {{ $isHome ? 'bg-brand-50 text-brand-700 font-bold nav-link-active' : 'text-gray-600 hover:bg-gray-50 font-medium' }}" @if($isHome) aria-current="page" @endif href="{{ route('pages.home') }}#beranda">
      Beranda
     </a>
-    <a class="block px-3.5 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50 font-medium" href="{{ route('pages.profile') }}">
+    <a class="block px-3.5 py-2.5 rounded-xl {{ $isProfile ? 'bg-brand-50 text-brand-700 font-bold nav-link-active' : 'text-gray-600 hover:bg-gray-50 font-medium' }}" @if($isProfile) aria-current="page" @endif href="{{ route('pages.profile') }}">
      Profil Desa
     </a>
-    <a class="block px-3.5 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50 font-medium" href="{{ route('pages.potensi') }}">
+    <a class="block px-3.5 py-2.5 rounded-xl {{ $isPotensi ? 'bg-brand-50 text-brand-700 font-bold nav-link-active' : 'text-gray-600 hover:bg-gray-50 font-medium' }}" @if($isPotensi) aria-current="page" @endif href="{{ route('pages.potensi') }}">
      Potensi Desa
     </a>
 
     <!-- Menu Informasi Mobile dengan Toggle Submenu -->
     <div>
-     <div class="flex items-center justify-between rounded-xl hover:bg-gray-50">
-      <a class="mobile-parent-link flex-grow px-3.5 py-2.5 text-gray-600 font-medium" href="{{ route('pages.informasi') }}">
+     <div class="flex items-center justify-between rounded-xl {{ $isInformasi ? 'bg-brand-50' : 'hover:bg-gray-50' }}">
+      <a class="mobile-parent-link flex-grow px-3.5 py-2.5 {{ $isInformasi ? 'text-brand-700 font-bold nav-link-active' : 'text-gray-600 font-medium' }}" href="{{ route('pages.informasi') }}" @if($isInformasi) aria-current="page" @endif>
        Informasi
       </a>
-      <button type="button" class="p-2.5 text-gray-500 hover:text-brand-700 focus:outline-none" id="mobileDropdownBtn" aria-expanded="false" aria-label="Buka submenu Informasi">
-       <svg class="w-4 h-4 transform transition-transform duration-200" id="mobileDropdownIcon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <button type="button" class="p-2.5 text-gray-500 hover:text-white focus:outline-none" id="mobileDropdownBtn" aria-expanded="{{ $isInformasi ? 'true' : 'false' }}" aria-label="Buka submenu Informasi">
+       <svg class="w-4 h-4 transform transition-transform duration-200 {{ $isInformasi ? 'rotate-180' : '' }}" id="mobileDropdownIcon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/>
        </svg>
       </button>
      </div>
      <!-- Submenu List Mobile -->
-     <div class="hidden pl-3 pr-1 py-1.5 space-y-1 bg-brand-50/30 rounded-lg mt-1 border-l-2 border-brand-400" id="mobileSubmenu">
-      <a class="block px-3.5 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-brand-700 hover:bg-white transition" href="{{ route('pages.informasi.statistik') }}">
+     <div class="{{ $isInformasi ? '' : 'hidden' }} pl-3 pr-1 py-1.5 space-y-1 bg-brand-50/30 rounded-lg mt-1 border-l-2 border-brand-400" id="mobileSubmenu">
+      <a class="block px-3.5 py-2 rounded-md text-sm {{ $isStatistik ? 'bg-white text-brand-700 font-bold nav-link-active shadow-2xs' : 'font-medium text-gray-700 hover:text-white hover:bg-white' }} transition" href="{{ route('pages.informasi.statistik') }}" @if($isStatistik) aria-current="page" @endif>
        Statistik Desa
       </a>
-      <a class="block px-3.5 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-brand-700 hover:bg-white transition" href="{{ route('pages.informasi.dokumen') }}">
-       Publikasi Dokumen
-      </a>
-      <a class="block px-3.5 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-brand-700 hover:bg-white transition" href="{{ route('pages.informasi.kegiatan') }}">
-       Dokumentasi Kegiatan Desa
+      <a class="block px-3.5 py-2 rounded-md text-sm {{ $isArsip ? 'bg-white text-brand-700 font-bold nav-link-active shadow-2xs' : 'font-medium text-gray-700 hover:text-white hover:bg-white' }} transition" href="{{ route('pages.arsip.index') }}" @if($isArsip) aria-current="page" @endif>
+       Arsip &amp; Dokumentasi Desa
       </a>
      </div>
     </div>
 
-    <a class="block px-3.5 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50 font-medium" href="{{ route('pages.pengaduan') }}">
+    <a class="block px-3.5 py-2.5 rounded-xl {{ $isPengaduan ? 'bg-brand-50 text-brand-700 font-bold nav-link-active' : 'text-gray-600 hover:bg-gray-50 font-medium' }}" @if($isPengaduan) aria-current="page" @endif href="{{ route('pages.pengaduan') }}">
      Pengaduan
     </a>
+
+    @auth
+     <div class="pt-3 mt-2 border-t border-gray-100">
+      <a class="nav-admin-btn-mobile" href="{{ route('admin.dashboard') }}">
+       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/>
+       </svg>
+       <span>Admin Panel</span>
+      </a>
+     </div>
+    @endauth
    </div>
   </header>
     @yield('content')
@@ -196,8 +221,8 @@
         </a>
        </li>
        <li>
-        <a class="hover:text-white transition" href="#berita">
-         Berita &amp; Pengumuman
+        <a class="hover:text-white transition" href="{{ route('pages.arsip.index') }}">
+         Arsip &amp; Dokumentasi Desa
         </a>
        </li>
        <li>

@@ -2,33 +2,40 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Arsip;
 use Illuminate\Contracts\View\View;
 
 class PageController extends Controller
 {
     public function home(): View
     {
-        return view('pages.index');
+        $arsipTerbaru = Arsip::query()
+            ->terbit()
+            ->with('penulis')
+            ->orderByDesc('tanggal')
+            ->orderByDesc('created_at')
+            ->limit(4)
+            ->get();
+
+        return view('pages.index', compact('arsipTerbaru'));
     }
 
     public function informasi(): View
     {
-        return view('pages.informasi');
+        $arsipTerbaru = Arsip::query()
+            ->terbit()
+            ->with('penulis')
+            ->orderByDesc('tanggal')
+            ->orderByDesc('created_at')
+            ->limit(5)
+            ->get();
+
+        return view('pages.informasi', compact('arsipTerbaru'));
     }
 
     public function statistik(): View
     {
         return view('pages.statistik');
-    }
-
-    public function dokumen(): View
-    {
-        return view('pages.dokumen');
-    }
-
-    public function kegiatan(): View
-    {
-        return view('pages.kegiatan');
     }
 
     public function potensi(): View
