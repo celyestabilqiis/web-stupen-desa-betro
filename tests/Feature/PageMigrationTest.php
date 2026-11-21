@@ -44,6 +44,28 @@ class PageMigrationTest extends TestCase
             ->assertDontSee('Sign Up');
     }
 
+    public function test_shared_footer_has_contact_links_map_and_existing_social_channels(): void
+    {
+        $this->get(route('pages.home'))
+            ->assertOk()
+            ->assertSee('PEMERINTAH DESA BETRO')
+            ->assertSee('Hubungi Kami')
+            ->assertSee('Telepon/WhatsApp')
+            ->assertSee('Email resmi')
+            ->assertSee('Belum tersedia')
+            ->assertSee('href="'.route('pages.home').'"', false)
+            ->assertSee('href="'.route('pages.profile').'"', false)
+            ->assertSee('href="'.route('pages.potensi').'"', false)
+            ->assertSee('href="'.route('pages.informasi').'"', false)
+            ->assertSee('href="'.route('pages.arsip.index').'"', false)
+            ->assertSee('aria-label="Buka lokasi Desa Betro di Google Maps"', false)
+            ->assertSee('aria-label="Facebook"', false)
+            ->assertSee('aria-label="Instagram"', false)
+            ->assertSee('aria-label="YouTube"', false)
+            ->assertSee('aria-label="WhatsApp"', false)
+            ->assertSee('&copy; 2026 Desa Betro. All rights reserved.', false);
+    }
+
     public function test_information_content_is_available_in_the_homepage_section(): void
     {
         $this->get(route('pages.home'))

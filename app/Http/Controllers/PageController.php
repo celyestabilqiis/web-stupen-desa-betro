@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Arsip;
+use App\Models\Umkm;
 use Illuminate\Contracts\View\View;
 
 class PageController extends Controller
@@ -40,7 +41,9 @@ class PageController extends Controller
 
     public function potensi(): View
     {
-        return view('pages.potensi');
+        $umkmList = Umkm::published()->latest()->get();
+
+        return view('pages.potensi', compact('umkmList'));
     }
 
     public function profile(): View

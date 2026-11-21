@@ -39,9 +39,9 @@
     @stack('styles')
 </head>
 <body class="bg-gray-50 text-gray-800 antialiased font-sans">
-    <div class="min-h-screen flex flex-col md:flex-row">
+    <div class="min-h-screen md:flex">
         <!-- Sidebar Desktop -->
-        <aside class="w-full md:w-64 bg-[#801b2a] text-white flex-shrink-0 flex flex-col justify-between">
+        <aside class="w-full bg-[#801b2a] text-white flex flex-col justify-between md:fixed md:inset-y-0 md:left-0 md:z-40 md:h-screen md:w-64">
             <div>
                 <!-- Brand Header -->
                 <div class="p-6 border-b border-brand-800/80 flex items-center gap-3">
@@ -66,6 +66,10 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
                         </svg>
                         <span>Arsip &amp; Dokumentasi</span>
+                    </a>
+
+                    <a href="{{ route('admin.umkm.index') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition {{ request()->routeIs('admin.umkm.*') ? 'bg-white/15 text-white shadow-xs' : 'text-white/80 hover:bg-white/10 hover:text-white' }}">
+                        <span class="text-gold">◆</span><span>Katalog UMKM</span>
                     </a>
 
                     <a href="{{ route('admin.accounts.index') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition {{ request()->routeIs('admin.accounts.*') ? 'bg-white/15 text-white shadow-xs' : 'text-white/80 hover:bg-white/10 hover:text-white' }}">
@@ -107,7 +111,7 @@
         </aside>
 
         <!-- Main Content Area -->
-        <div class="flex-1 flex flex-col overflow-y-auto">
+        <div class="flex min-h-screen flex-1 flex-col md:ml-64 md:h-screen md:overflow-y-auto">
             <!-- Topbar Mobile & Breadcrumb -->
             <header class="bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between">
                 <div>
