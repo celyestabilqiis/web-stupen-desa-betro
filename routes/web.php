@@ -2,10 +2,13 @@
 
 use App\Http\Controllers\Admin\AdminAccountController;
 use App\Http\Controllers\Admin\ArsipAdminController;
+use App\Http\Controllers\Admin\UmkmAdminController;
 use App\Http\Controllers\ArsipController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\UmkmController;
 use App\Models\Arsip;
+use App\Models\Umkm;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/admin', [AuthController::class, 'showLogin'])->name('login');
@@ -19,6 +22,7 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
         $totalArsipDesa = Arsip::where('kategori', 'arsip_desa')->count();
         $totalDokumentasi = Arsip::where('kategori', 'dokumentasi_desa')->count();
         $arsipTerbaru = Arsip::with('penulis')->orderByDesc('created_at')->limit(5)->get();
+        $umkmTerbaru = Umkm::withCount('products')->orderByDesc('created_at')->limit(3)->get();
 
         return view('admin.dashboard', compact(
             'totalArsip',
@@ -26,12 +30,14 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
             'totalDraft',
             'totalArsipDesa',
             'totalDokumentasi',
-            'arsipTerbaru'
+            'arsipTerbaru',
+            'umkmTerbaru'
         ));
     })->name('dashboard');
 
     Route::post('/arsip/upload-editor-image', [ArsipAdminController::class, 'uploadEditorImage'])->name('arsip.upload-image');
     Route::resource('arsip', ArsipAdminController::class)->except(['show']);
+    Route::resource('umkm', UmkmAdminController::class)->except(['show']);
 
     Route::get('/accounts', [AdminAccountController::class, 'index'])->name('accounts.index');
     Route::get('/accounts/create', [AdminAccountController::class, 'create'])->name('accounts.create');
@@ -57,6 +63,7 @@ Route::controller(PageController::class)->group(function () {
 // Fitur Baru: Arsip & Dokumentasi Desa
 Route::get('/arsip-dokumentasi', [ArsipController::class, 'index'])->name('pages.arsip.index');
 Route::get('/arsip-dokumentasi/{slug}', [ArsipController::class, 'show'])->name('pages.arsip.show');
+Route::get('/umkm/{slug}', [UmkmController::class, 'show'])->name('pages.umkm.show');
 
 // Redirect 301 halaman lama ke /arsip-dokumentasi
 Route::redirect('/informasi/dokumen', '/arsip-dokumentasi', 301);

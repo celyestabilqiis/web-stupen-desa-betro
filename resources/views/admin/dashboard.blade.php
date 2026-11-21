@@ -153,5 +153,12 @@
             </table>
         </div>
     </div>
+    <div class="overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-xs">
+        <div class="flex items-center justify-between border-b border-gray-100 p-5">
+            <div><h2 class="text-base font-bold text-gray-900">UMKM Terbaru</h2><p class="mt-0.5 text-xs text-gray-500">Maksimal tiga usaha yang terakhir ditambahkan</p></div>
+            <a href="{{ route('admin.umkm.index') }}" class="flex items-center gap-1 text-xs font-bold text-brand-700 transition hover:text-brand-900"><span>Kelola Semua UMKM</span><svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></a>
+        </div>
+        <div class="overflow-x-auto"><table class="w-full text-left text-sm"><thead class="border-b border-gray-100 bg-gray-50 text-xs font-semibold uppercase tracking-wider text-gray-500"><tr><th class="px-6 py-3.5">Nama usaha</th><th class="px-6 py-3.5">Kategori</th><th class="px-6 py-3.5">Produk</th><th class="px-6 py-3.5">Status</th><th class="px-6 py-3.5 text-right">Aksi</th></tr></thead><tbody class="divide-y divide-gray-100">@forelse ($umkmTerbaru as $umkm)<tr class="hover:bg-gray-50/50"><td class="px-6 py-4 font-bold text-gray-900">{{ $umkm->nama_usaha }}</td><td class="px-6 py-4">{{ $umkm->kategori }}</td><td class="px-6 py-4">{{ $umkm->products_count }}</td><td class="px-6 py-4">{{ $umkm->status === 'terbit' ? 'Terbit' : 'Draft' }}</td><td class="px-6 py-4 text-right"><a href="{{ route('admin.umkm.edit', $umkm) }}" class="text-xs font-bold text-brand-700">Edit</a></td></tr>@empty<tr><td colspan="5" class="px-6 py-8 text-center text-sm text-gray-400">Belum ada data UMKM.</td></tr>@endforelse</tbody></table></div>
+    </div>
 </div>
 @endsection

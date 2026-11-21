@@ -72,6 +72,7 @@
    <section class="welcome-section" id="sambutan">
     <div class="welcome-inner">
      <div class="welcome-copy">
+      <span class="information-section-kicker">SAMBUTAN KEPALA DESA</span>
       <h2>
        Selamat datang di portal digital Desa Betro
       </h2>
