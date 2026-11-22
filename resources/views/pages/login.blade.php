@@ -20,7 +20,7 @@
       <span class="auth-orbit auth-orbit-two" aria-hidden="true"></span>
       <a href="{{ route('pages.home') }}" class="auth-brand">
         <span class="auth-brand-mark"><img src="{{ asset('assets/images/logo-betro.png') }}" alt=""/></span>
-        <span><strong>DESA BETRO</strong><small>Kecamatan Kemlagi · Kabupaten Mojokerto</small></span>
+        <span><strong>DESA BETRO</strong><small>Kecamatan Kemlagi - Kabupaten Mojokerto</small></span>
       </a>
       <div class="auth-visual-copy">
         <span class="auth-eyebrow"><i></i> PORTAL DIGITAL DESA</span>

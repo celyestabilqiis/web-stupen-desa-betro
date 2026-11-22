@@ -37,6 +37,63 @@ class UmkmCatalogTest extends TestCase
         $this->get(route('pages.umkm.show', 'usaha-draft'))->assertNotFound();
     }
 
+    public function test_public_catalog_searches_business_and_product_fields_without_duplicates(): void
+    {
+        $umkm = Umkm::create([
+            'nama_usaha' => 'Warung Pojok Betro',
+            'slug' => 'warung-pojok-betro',
+            'kategori' => 'Kuliner',
+            'deskripsi_singkat' => 'Menyediakan hidangan rumahan',
+            'deskripsi_lengkap' => 'Usaha kuliner dengan layanan pesan antar.',
+            'status' => 'terbit',
+        ]);
+        $umkm->products()->create(['nama_produk' => 'Sambal Nanas', 'deskripsi' => 'Sambal buah segar khas desa']);
+        $umkm->products()->create(['nama_produk' => 'Sambal Mangga', 'deskripsi' => 'Sambal segar lainnya']);
+
+        $this->get(route('pages.potensi', ['cari' => 'Warung Pojok']))
+            ->assertOk()
+            ->assertSee('Warung Pojok Betro');
+        $productSearch = $this->get(route('pages.potensi', ['cari' => 'Sambal']))
+            ->assertOk()
+            ->assertSee('Warung Pojok Betro')
+            ->assertDontSee('Data UMKM tidak ditemukan');
+        $this->assertSame(1, substr_count($productSearch->getContent(), 'href="'.route('pages.umkm.show', $umkm->slug).'"'));
+        $this->get(route('pages.potensi', ['cari' => 'pesan antar']))
+            ->assertOk()
+            ->assertSee('Warung Pojok Betro');
+        $this->get(route('pages.potensi', ['cari' => 'buah segar']))
+            ->assertOk()
+            ->assertSee('Warung Pojok Betro');
+        $this->get(route('pages.potensi', ['cari' => 'tidak-ada-hasil']))
+            ->assertOk()
+            ->assertSee('Data UMKM tidak ditemukan');
+    }
+
+    public function test_public_catalog_paginates_six_results_and_preserves_search(): void
+    {
+        foreach (range(1, 7) as $number) {
+            Umkm::create([
+                'nama_usaha' => 'Usaha Pencarian '.$number,
+                'slug' => 'usaha-pencarian-'.$number,
+                'kategori' => 'Kuliner',
+                'deskripsi_singkat' => 'Hasil khusus paginasi',
+                'status' => 'terbit',
+            ]);
+        }
+
+        $this->get(route('pages.potensi', ['cari' => 'khusus paginasi']))
+            ->assertOk()
+            ->assertSee('Usaha Pencarian 1')
+            ->assertDontSee('Usaha Pencarian 7')
+            ->assertSee('cari=khusus%20paginasi', false)
+            ->assertSee('page=2', false);
+        $this->get(route('pages.potensi', ['cari' => 'khusus paginasi', 'page' => 2]))
+            ->assertOk()
+            ->assertSee('Usaha Pencarian 7')
+            ->assertSee('Sebelumnya')
+            ->assertSee('Berikutnya');
+    }
+
     public function test_administrator_can_create_and_edit_umkm_and_products(): void
     {
         $admin = User::factory()->create();

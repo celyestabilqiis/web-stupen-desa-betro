@@ -42,12 +42,59 @@ class ArsipTest extends TestCase
             ->assertDontSee('Laporan APBDes Terbaru');
     }
 
+    public function test_arsip_list_searches_title_and_description_with_category_filter_and_keeps_query_in_pagination(): void
+    {
+        Arsip::factory()->terbit()->arsipDesa()->create(['judul' => 'Pedoman Arsip Betro', 'ringkasan' => 'Informasi pembaruan khusus', 'isi' => '<p>Isi dokumen.</p>']);
+        Arsip::factory()->terbit()->dokumentasiDesa()->create(['judul' => 'Kegiatan Warga', 'ringkasan' => 'Pembaruan lingkungan', 'isi' => '<p>Dokumentasi khusus.</p>']);
+
+        $this->get(route('pages.arsip.index', ['cari' => 'khusus']))
+            ->assertOk()
+            ->assertSee('Pedoman Arsip Betro')
+            ->assertSee('Kegiatan Warga');
+        $this->get(route('pages.arsip.index', ['cari' => 'Pedoman Arsip']))
+            ->assertOk()
+            ->assertSee('Pedoman Arsip Betro')
+            ->assertDontSee('Kegiatan Warga');
+        $this->get(route('pages.arsip.index', ['cari' => 'khusus', 'kategori' => 'arsip_desa']))
+            ->assertOk()
+            ->assertSee('Pedoman Arsip Betro')
+            ->assertDontSee('Kegiatan Warga');
+
+        Arsip::factory()->terbit()->arsipDesa()->count(7)->create(['ringkasan' => 'Kata kunci bersama']);
+        $this->get(route('pages.arsip.index', ['cari' => 'Kata kunci bersama', 'kategori' => 'arsip_desa']))
+            ->assertOk()
+            ->assertSee('cari=Kata%20kunci%20bersama', false)
+            ->assertSee('kategori=arsip_desa', false);
+    }
+
+    public function test_arsip_search_shows_requested_empty_state(): void
+    {
+        $this->get(route('pages.arsip.index', ['cari' => 'tidak-ada-hasil']))
+            ->assertOk()
+            ->assertSee('Arsip atau dokumentasi tidak ditemukan');
+    }
+
     public function test_arsip_list_has_pagination(): void
     {
         Arsip::factory()->terbit()->count(10)->create();
 
         $this->get(route('pages.arsip.index'))
             ->assertOk()
+            ->assertSee('Berikutnya');
+    }
+
+    public function test_arsip_pagination_shows_only_six_records_and_keeps_search_and_category(): void
+    {
+        Arsip::factory()->terbit()->arsipDesa()->count(7)->create(['ringkasan' => 'Kata cari arsip']);
+
+        $this->get(route('pages.arsip.index', ['cari' => 'Kata cari arsip', 'kategori' => 'arsip_desa']))
+            ->assertOk()
+            ->assertSee('cari=Kata%20cari%20arsip', false)
+            ->assertSee('kategori=arsip_desa', false)
+            ->assertSee('page=2', false);
+        $this->get(route('pages.arsip.index', ['cari' => 'Kata cari arsip', 'kategori' => 'arsip_desa', 'page' => 2]))
+            ->assertOk()
+            ->assertSee('Sebelumnya')
             ->assertSee('Berikutnya');
     }
 

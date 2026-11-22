@@ -31,9 +31,9 @@
     </div>
    </section>
    <section class="information-stats" aria-label="Ringkasan Desa">
-    <div class="information-stat"><div class="information-stat-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><div><strong>2.630</strong><span>Total Penduduk</span></div></div>
-    <div class="information-stat"><div class="information-stat-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="7" r="4"/><path d="M5.5 21v-2a6.5 6.5 0 0 1 13 0v2"/></svg></div><div><strong>735</strong><span>Laki-laki</span></div></div>
-    <div class="information-stat"><div class="information-stat-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="7" r="4"/><path d="M5.5 21v-2a6.5 6.5 0 0 1 13 0v2M9 16h6"/></svg></div><div><strong>775</strong><span>Perempuan</span></div></div>
+    <div class="information-stat"><div class="information-stat-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><div><strong>{{ $publicStatistics->get('total-penduduk')?->nilai_format ?? '—' }}</strong><span>Total Penduduk</span></div></div>
+    <div class="information-stat"><div class="information-stat-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="7" r="4"/><path d="M5.5 21v-2a6.5 6.5 0 0 1 13 0v2"/></svg></div><div><strong>{{ $publicStatistics->get('penduduk-laki-laki')?->nilai_format ?? '—' }}</strong><span>Laki-laki</span></div></div>
+    <div class="information-stat"><div class="information-stat-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="7" r="4"/><path d="M5.5 21v-2a6.5 6.5 0 0 1 13 0v2M9 16h6"/></svg></div><div><strong>{{ $publicStatistics->get('penduduk-perempuan')?->nilai_format ?? '—' }}</strong><span>Perempuan</span></div></div>
     <a class="information-stat information-stat-link" href="{{ route('pages.informasi.statistik') }}"><div class="information-stat-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3v18h18M7 16l4-4 3 3 5-7"/></svg></div><div><strong class="information-stat-small">Statistik Desa</strong><span>Lihat data lengkap </span></div></a>
    </section>
    <!-- Arsip & Dokumentasi Desa Terbaru -->

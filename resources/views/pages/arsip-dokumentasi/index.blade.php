@@ -19,19 +19,30 @@
 
         <!-- Tombol Saring Berbentuk Pil (Pills) -->
         <div class="flex items-center justify-center gap-2.5 mb-10 flex-wrap">
-            <a href="{{ route('pages.arsip.index') }}" 
+            <a href="{{ route('pages.arsip.index', array_filter(['cari' => request('cari')], fn ($value) => $value !== null)) }}"
                class="px-5 py-2 rounded-full text-xs sm:text-sm font-bold transition shadow-xs {{ !request('kategori') ? 'bg-brand-700 text-white shadow-sm' : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-200' }}">
                 Semua
             </a>
-            <a href="{{ route('pages.arsip.index', ['kategori' => 'arsip_desa']) }}" 
+            <a href="{{ route('pages.arsip.index', array_filter(['kategori' => 'arsip_desa', 'cari' => request('cari')], fn ($value) => $value !== null)) }}"
                class="px-5 py-2 rounded-full text-xs sm:text-sm font-bold transition shadow-xs {{ request('kategori') === 'arsip_desa' ? 'bg-brand-700 text-white shadow-sm' : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-200' }}">
                 Arsip Desa
             </a>
-            <a href="{{ route('pages.arsip.index', ['kategori' => 'dokumentasi_desa']) }}" 
+            <a href="{{ route('pages.arsip.index', array_filter(['kategori' => 'dokumentasi_desa', 'cari' => request('cari')], fn ($value) => $value !== null)) }}"
                class="px-5 py-2 rounded-full text-xs sm:text-sm font-bold transition shadow-xs {{ request('kategori') === 'dokumentasi_desa' ? 'bg-brand-700 text-white shadow-sm' : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-200' }}">
                 Dokumentasi Desa
             </a>
         </div>
+
+        <form method="GET" action="{{ route('pages.arsip.index') }}" class="mb-8">
+            @if (request('kategori'))<input type="hidden" name="kategori" value="{{ request('kategori') }}">@endif
+            <label for="arsip-search" class="sr-only">Cari arsip atau dokumentasi desa</label>
+            <div class="mx-auto flex max-w-2xl items-center gap-2 rounded-2xl border border-gray-200 bg-white px-4 py-2 shadow-xs focus-within:border-brand-400 focus-within:ring-2 focus-within:ring-brand-100">
+                <svg class="h-5 w-5 shrink-0 text-brand-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke-width="2"/><path d="m20 20-4-4" stroke-width="2" stroke-linecap="round"/></svg>
+                <input id="arsip-search" name="cari" value="{{ request('cari') }}" placeholder="Cari arsip atau dokumentasi desa..." class="min-w-0 flex-1 border-0 text-sm outline-none focus:ring-0">
+                @if (request()->filled('cari'))<a href="{{ route('pages.arsip.index', request('kategori') ? ['kategori' => request('kategori')] : []) }}" class="shrink-0 text-xs font-bold text-brand-700 hover:text-brand-900">Hapus</a>@endif
+                <button type="submit" class="shrink-0 rounded-xl bg-brand-700 px-4 py-2 text-xs font-bold text-white transition hover:bg-brand-800">Cari</button>
+            </div>
+        </form>
 
         <!-- Grid Kartu Arsip (3 kolom desktop, 2 tablet, 1 mobile, gap 24px) -->
         @if ($arsipList->count() > 0)
@@ -120,34 +131,7 @@
             </div>
 
             <!-- Pagination di Tengah Bawah Grid -->
-            @if ($arsipList->hasPages())
-                <div class="mt-12 flex justify-center">
-                    <nav role="navigation" aria-label="Pagination Navigation" class="inline-flex items-center gap-1 bg-white p-1.5 rounded-xl border border-gray-200 shadow-xs">
-                        {{-- Tombol Sebelumnya --}}
-                        @if ($arsipList->onFirstPage())
-                            <span class="px-3 py-1.5 text-xs text-gray-300 rounded-lg cursor-not-allowed">Sebelumnya</span>
-                        @else
-                            <a href="{{ $arsipList->previousPageUrl() }}" class="px-3 py-1.5 text-xs font-bold text-gray-700 hover:bg-gray-100 rounded-lg transition">Sebelumnya</a>
-                        @endif
-
-                        {{-- Nomor Halaman --}}
-                        @foreach ($arsipList->getUrlRange(1, $arsipList->lastPage()) as $page => $url)
-                            @if ($page == $arsipList->currentPage())
-                                <span class="px-3 py-1.5 text-xs font-bold bg-brand-700 text-white rounded-lg shadow-xs">{{ $page }}</span>
-                            @else
-                                <a href="{{ $url }}" class="px-3 py-1.5 text-xs font-semibold text-gray-700 hover:bg-gray-100 rounded-lg transition">{{ $page }}</a>
-                            @endif
-                        @endforeach
-
-                        {{-- Tombol Berikutnya --}}
-                        @if ($arsipList->hasMorePages())
-                            <a href="{{ $arsipList->nextPageUrl() }}" class="px-3 py-1.5 text-xs font-bold text-gray-700 hover:bg-gray-100 rounded-lg transition">Berikutnya</a>
-                        @else
-                            <span class="px-3 py-1.5 text-xs text-gray-300 rounded-lg cursor-not-allowed">Berikutnya</span>
-                        @endif
-                    </nav>
-                </div>
-            @endif
+            @include('components.public-pagination', ['paginator' => $arsipList])
         @else
             <!-- Keadaan Kosong (Empty State) -->
             <div class="bg-white rounded-2xl border border-gray-100 p-12 text-center max-w-md mx-auto shadow-xs my-8">
@@ -156,9 +140,11 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
                     </svg>
                 </div>
-                <h3 class="text-base font-bold text-gray-900 mb-1">Belum Ada Arsip</h3>
+                <h3 class="text-base font-bold text-gray-900 mb-1">{{ request()->filled('cari') ? 'Arsip atau dokumentasi tidak ditemukan' : 'Belum Ada Arsip' }}</h3>
                 <p class="text-xs text-gray-500 leading-relaxed mb-6">
-                    @if (request('kategori'))
+                    @if (request()->filled('cari'))
+                        Coba kata kunci lain atau hapus pencarian untuk melihat data lainnya.
+                    @elseif (request('kategori'))
                         Belum ada dokumen atau arsip untuk kategori ini.
                     @else
                         Arsip dan dokumentasi desa belum diterbitkan. Silakan periksa kembali nanti.
