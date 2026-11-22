@@ -3209,6 +3209,152 @@ body[data-page="informasi"] .section-separator h2 {
   font-size: 32px;
 }
 
+.village-officials-section {
+  margin: 0 0 70px;
+}
+
+.village-officials-heading {
+  margin-bottom: 18px;
+}
+
+.village-officials-divider {
+  height: 1px;
+  margin-bottom: 30px;
+  background: #e9e5e5;
+}
+
+.village-officials-section .profile-leadership-section {
+  display: flex;
+  justify-content: center;
+  margin: 0 0 28px;
+}
+
+.village-official-card {
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 8px 24px rgba(81, 18, 29, .045);
+  text-align: center;
+}
+
+.village-official-leader {
+  width: min(100%, 360px);
+  border-color: #e8d8b3;
+}
+
+.village-official-photo {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 170px;
+  overflow: hidden;
+  background: linear-gradient(145deg, #fbf7f5, #f2e6e3);
+}
+
+.village-official-photo-leader {
+  height: 230px;
+  background: linear-gradient(145deg, #fbf5e9, #f2e2bd);
+}
+
+.village-official-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.village-official-placeholder {
+  display: grid;
+  place-items: center;
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  background: #fff;
+  color: var(--color-primary);
+  font-size: 38px;
+  box-shadow: 0 5px 20px rgba(81, 18, 29, .08);
+}
+
+.village-official-copy {
+  min-height: 105px;
+  padding: 17px 15px 19px;
+}
+
+.village-official-copy h3 {
+  margin: 0;
+  color: var(--color-primary-dark);
+  font-size: 16px;
+  line-height: 1.35;
+  font-weight: 900;
+}
+
+.village-official-copy p {
+  margin: 5px 0 0;
+  color: var(--color-primary);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.village-official-leader .village-official-copy h3 {
+  margin-top: 8px;
+  font-size: 19px;
+}
+
+.village-official-copy .profile-person-summary {
+  min-height: 0;
+  margin: 10px 0 0;
+  color: var(--color-muted);
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.village-official-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+}
+
+@media (max-width: 900px) {
+  .village-official-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 480px) {
+  .village-official-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 11px;
+  }
+
+  .village-official-photo {
+    height: 145px;
+  }
+
+  .village-official-photo-leader {
+    height: 210px;
+  }
+
+  .village-official-copy {
+    min-height: 96px;
+    padding: 13px 9px 15px;
+  }
+
+  .village-official-copy h3 {
+    font-size: 13px;
+  }
+
+  .village-official-copy p {
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 350px) {
+  .village-official-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 .profile-no-results h3 {
   margin: 10px 0 4px;
   color: var(--color-primary-dark);

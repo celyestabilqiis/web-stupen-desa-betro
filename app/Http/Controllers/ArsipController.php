@@ -12,11 +12,23 @@ class ArsipController extends Controller
 {
     public function index(Request $request): View
     {
+        $request->validate(['cari' => ['nullable', 'string', 'max:255']]);
+
         $query = Arsip::query()
             ->terbit()
             ->with('penulis')
             ->orderByDesc('tanggal')
             ->orderByDesc('created_at');
+
+        if ($request->filled('cari')) {
+            $search = trim((string) $request->input('cari'));
+            $query->where(function ($query) use ($search): void {
+                $query->where('judul', 'like', '%'.$search.'%')
+                    ->orWhere('ringkasan', 'like', '%'.$search.'%')
+                    ->orWhere('isi', 'like', '%'.$search.'%')
+                    ->orWhere('kategori', 'like', '%'.$search.'%');
+            });
+        }
 
         if ($request->filled('kategori') && in_array($request->input('kategori'), ['arsip_desa', 'dokumentasi_desa'])) {
             $query->where('kategori', $request->input('kategori'));

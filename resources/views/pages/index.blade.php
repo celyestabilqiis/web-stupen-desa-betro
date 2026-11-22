@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Website Resmi Desa Betro - Kecamatan Kemlagi • Kabupaten Mojokerto')
+@section('title', 'Website Resmi Desa Betro - Kecamatan Kemlagi - Kabupaten Mojokerto')
 @section('description', 'Portal informasi, layanan, dan kegiatan Pemerintah Desa Betro. Halaman home menggunakan konten contoh yang dapat disesuaikan.')
 @section('page-key', 'home')
 
@@ -34,7 +34,7 @@
       </span>
       <div>
        <strong>
-        4.280
+        {{ $publicStatistics->get('total-penduduk')?->nilai_format ?? '—' }}
        </strong>
        <span>
         Perkiraan penduduk
@@ -47,7 +47,7 @@
       </span>
       <div>
        <strong>
-        1.245
+        {{ $publicStatistics->get('jumlah-rumah-tangga')?->nilai_format ?? '—' }}
        </strong>
        <span>
         Kepala keluarga
@@ -60,7 +60,7 @@
       </span>
       <div>
        <strong>
-        4
+        {{ $publicStatistics->get('jumlah-dusun')?->nilai_format ?? '—' }}
        </strong>
        <span>
         Dusun / wilayah
@@ -153,7 +153,7 @@
           </div>
          </div>
          <div>
-          <p class="text-2xl font-extrabold text-gray-900 group-hover:text-brand-700 transition">2.630</p>
+          <p class="text-2xl font-extrabold text-gray-900 group-hover:text-brand-700 transition">{{ $publicStatistics->get('total-penduduk')?->nilai_format ?? '—' }}</p>
           <p class="text-[11px] text-gray-400 mt-0.5">Total Penduduk</p>
          </div>
         </a>
@@ -170,7 +170,7 @@
           </div>
          </div>
          <div>
-          <p class="text-2xl font-extrabold text-gray-900 group-hover:text-blue-700 transition">735</p>
+          <p class="text-2xl font-extrabold text-gray-900 group-hover:text-blue-700 transition">{{ $publicStatistics->get('penduduk-laki-laki')?->nilai_format ?? '—' }}</p>
           <p class="text-[11px] text-gray-400 mt-0.5">Jiwa Terdata</p>
          </div>
         </a>
@@ -187,7 +187,7 @@
           </div>
          </div>
          <div>
-          <p class="text-2xl font-extrabold text-gray-900 group-hover:text-rose-700 transition">775</p>
+          <p class="text-2xl font-extrabold text-gray-900 group-hover:text-rose-700 transition">{{ $publicStatistics->get('penduduk-perempuan')?->nilai_format ?? '—' }}</p>
           <p class="text-[11px] text-gray-400 mt-0.5">Jiwa Terdata</p>
          </div>
         </a>
@@ -204,7 +204,7 @@
           </div>
          </div>
          <div>
-          <p class="text-2xl font-extrabold text-gray-900 group-hover:text-amber-700 transition">4.33 <span class="text-sm font-bold text-gray-500">km&sup2;</span></p>
+          <p class="text-2xl font-extrabold text-gray-900 group-hover:text-amber-700 transition">{{ $publicStatistics->get('luas-wilayah')?->nilai_format ?? '—' }} <span class="text-sm font-bold text-gray-500">km&sup2;</span></p>
           <p class="text-[11px] text-gray-400 mt-0.5">Wilayah Desa</p>
          </div>
         </a>

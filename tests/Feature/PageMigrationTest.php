@@ -73,7 +73,8 @@ class PageMigrationTest extends TestCase
             ->assertSee('Informasi Desa')
             ->assertSee('Statistik Desa')
             ->assertSee('Arsip &amp; Dokumentasi Desa', false)
-            ->assertSee('2.630')
+            ->assertDontSee('2.630')
+            ->assertSee('—')
             ->assertSee(route('pages.informasi.statistik'))
             ->assertSee(route('pages.arsip.index'));
     }
@@ -118,7 +119,7 @@ class PageMigrationTest extends TestCase
         $this->get(route('pages.informasi.statistik'))
             ->assertOk()
             ->assertSee('Statistik Desa Betro')
-            ->assertSee('2.630')
+            ->assertSee('Data statistik belum tersedia')
             ->assertSee('site-header');
 
         $this->get(route('pages.arsip.index'))

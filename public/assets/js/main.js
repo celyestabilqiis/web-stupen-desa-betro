@@ -147,7 +147,18 @@
       });
       const leadershipSection = $('.profile-leadership-section');
       if (leadershipSection) leadershipSection.hidden = !leadershipSection.querySelector('[data-profile-card]:not([hidden])');
-      if (emptyState) emptyState.hidden = visibleCount > 0;
+      if (emptyState) {
+        emptyState.hidden = visibleCount > 0;
+        const heading = emptyState.querySelector('h3');
+        const description = emptyState.querySelector('p');
+        if (query) {
+          if (heading) heading.textContent = 'Profil tidak ditemukan';
+          if (description) description.textContent = 'Coba gunakan nama atau jabatan yang berbeda.';
+        } else {
+          if (heading) heading.textContent = 'Data perangkat desa belum tersedia';
+          if (description) description.textContent = 'Informasi perangkat desa akan ditampilkan setelah dipublikasikan oleh admin.';
+        }
+      }
     };
     profileSearch.addEventListener('input', filterProfiles);
     document.addEventListener('keydown', (event) => {

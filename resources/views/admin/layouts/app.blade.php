@@ -72,6 +72,28 @@
                         <span class="text-gold">◆</span><span>Katalog UMKM</span>
                     </a>
 
+                    <a href="{{ route('admin.struktur-pemerintahan.index') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition {{ request()->routeIs('admin.struktur-pemerintahan.*') ? 'bg-white/15 text-white shadow-xs' : 'text-white/80 hover:bg-white/10 hover:text-white' }}">
+                        <svg class="w-5 h-5 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2m16-3h4v-2a4 4 0 00-3-3.87M9 11a4 4 0 100-8 4 4 0 000 8zm7-7.87a4 4 0 010 7.75"/></svg>
+                        <span>Struktur Pemerintahan</span>
+                    </a>
+
+                    <a href="{{ route('admin.pengaduan.index') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition {{ request()->routeIs('admin.pengaduan.*') ? 'bg-white/15 text-white shadow-xs' : 'text-white/80 hover:bg-white/10 hover:text-white' }}">
+                        <svg class="w-5 h-5 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h6m-9 8 2.5-3H18a3 3 0 003-3V7a3 3 0 00-3-3H6a3 3 0 00-3 3v13z"/></svg>
+                        <span>Pengaduan</span>
+                    </a>
+
+                    <a href="{{ route('admin.statistik.index') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition {{ request()->routeIs('admin.statistik.*') ? 'bg-white/15 text-white shadow-xs' : 'text-white/80 hover:bg-white/10 hover:text-white' }}">
+                        <svg class="w-5 h-5 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 19V5m0 14h17M8 15v-4m5 4V7m5 8V9"/></svg>
+                        <span>Statistik Desa</span>
+                    </a>
+                    <div class="ml-12 -mt-1 mb-2 grid gap-1 text-xs text-white/70">
+                        <a class="rounded-lg px-2 py-1 hover:bg-white/10 hover:text-white" href="{{ route('admin.statistik.index') }}">Dashboard &amp; Data</a>
+                        <a class="rounded-lg px-2 py-1 hover:bg-white/10 hover:text-white" href="{{ route('admin.statistik.halaman.index') }}">Halaman Statistik</a>
+                        <a class="rounded-lg px-2 py-1 hover:bg-white/10 hover:text-white" href="{{ route('admin.statistik.kategori.index') }}">Kategori Statistik</a>
+                        <a class="rounded-lg px-2 py-1 hover:bg-white/10 hover:text-white" href="{{ route('admin.statistik.infografis') }}">Pengaturan Infografis</a>
+                        <a class="rounded-lg px-2 py-1 hover:bg-white/10 hover:text-white" href="{{ route('admin.statistik.tahun') }}">Pengaturan Tahun</a>
+                    </div>
+
                     <a href="{{ route('admin.accounts.index') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition {{ request()->routeIs('admin.accounts.*') ? 'bg-white/15 text-white shadow-xs' : 'text-white/80 hover:bg-white/10 hover:text-white' }}">
                         <svg class="w-5 h-5 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>

@@ -2,7 +2,12 @@
 
 use App\Http\Controllers\Admin\AdminAccountController;
 use App\Http\Controllers\Admin\ArsipAdminController;
+use App\Http\Controllers\Admin\PengaduanAdminController;
+use App\Http\Controllers\Admin\StatisticAdminController;
+use App\Http\Controllers\Admin\StatisticCategoryAdminController;
+use App\Http\Controllers\Admin\StatisticPageAdminController;
 use App\Http\Controllers\Admin\UmkmAdminController;
+use App\Http\Controllers\Admin\VillageOfficialAdminController;
 use App\Http\Controllers\ArsipController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PageController;
@@ -36,8 +41,26 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     })->name('dashboard');
 
     Route::post('/arsip/upload-editor-image', [ArsipAdminController::class, 'uploadEditorImage'])->name('arsip.upload-image');
+    Route::get('/pengaduan/export/excel', [PengaduanAdminController::class, 'exportExcel'])->name('pengaduan.export.excel');
+    Route::get('/pengaduan/export/pdf', [PengaduanAdminController::class, 'exportPdf'])->name('pengaduan.export.pdf');
+    Route::get('/pengaduan/{pengaduan}/foto/{photo}', [PengaduanAdminController::class, 'photo'])->whereNumber('photo')->name('pengaduan.photo');
+    Route::post('/pengaduan/{pengaduan}/catatan', [PengaduanAdminController::class, 'addNote'])->name('pengaduan.notes.store');
+    Route::resource('pengaduan', PengaduanAdminController::class);
+    Route::resource('statistik/kategori', StatisticCategoryAdminController::class)
+        ->except(['show'])
+        ->parameters(['kategori' => 'category'])
+        ->names('statistik.kategori');
+    Route::resource('statistik/halaman', StatisticPageAdminController::class)
+        ->except(['show'])
+        ->parameters(['halaman' => 'halaman'])
+        ->names('statistik.halaman');
+    Route::get('/statistik/tahun', [StatisticAdminController::class, 'years'])->name('statistik.tahun');
+    Route::redirect('/statistik/infografis', '/admin/statistik/kategori')->name('statistik.infografis');
+    Route::resource('statistik', StatisticAdminController::class);
     Route::resource('arsip', ArsipAdminController::class)->except(['show']);
     Route::resource('umkm', UmkmAdminController::class)->except(['show']);
+    Route::resource('struktur-pemerintahan', VillageOfficialAdminController::class)
+        ->parameters(['struktur-pemerintahan' => 'villageOfficial']);
 
     Route::get('/accounts', [AdminAccountController::class, 'index'])->name('accounts.index');
     Route::get('/accounts/create', [AdminAccountController::class, 'create'])->name('accounts.create');
@@ -54,11 +77,14 @@ Route::controller(PageController::class)->group(function () {
     Route::get('/', 'home')->name('pages.home');
     Route::get('/informasi', 'informasi')->name('pages.informasi');
     Route::get('/informasi/statistik', 'statistik')->name('pages.informasi.statistik');
+    Route::get('/informasi/statistik/{slug}', 'statistikPage')->name('pages.informasi.statistik.page');
     Route::get('/potensi', 'potensi')->name('pages.potensi');
     Route::get('/profile', 'profile')->name('pages.profile');
     Route::get('/pengaduan', 'pengaduan')->name('pages.pengaduan');
     Route::get('/login', 'login')->name('pages.login');
 });
+
+Route::post('/pengaduan', [PageController::class, 'storePengaduan'])->middleware('throttle:pengaduan')->name('pages.pengaduan.store');
 
 // Fitur Baru: Arsip & Dokumentasi Desa
 Route::get('/arsip-dokumentasi', [ArsipController::class, 'index'])->name('pages.arsip.index');

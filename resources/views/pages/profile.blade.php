@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title', 'Profil Perangkat Desa Betro - Portal Digital Desa Betro')
-@section('description', 'Profil perangkat Desa Betro, struktur organisasi, jabatan, dan tugas contoh. Seluruh nama adalah data dummy yang perlu disesuaikan.')
+@section('description', 'Profil pimpinan dan perangkat Pemerintah Desa Betro yang telah dipublikasikan.')
 @section('page-key', 'profile')
 
 @php
@@ -46,86 +46,38 @@
     </div>
    </section>
 
-   <section class="profile-leadership-section" aria-labelledby="kepala-desa-heading">
-    <div class="profile-section-heading">
-     <div><span class="profile-section-kicker">PIMPINAN DESA</span><h2 id="kepala-desa-heading">Kepala Desa</h2></div>
-    </div>
-    <article class="profile-leader-card" data-profile-card data-profile-name="Ahmad Firmansyah" data-profile-role="Kepala Desa">
-     <div class="profile-leader-art"><span class="profile-dummy-label">DATA DUMMY</span><div class="profile-avatar profile-avatar-large">AF</div><span class="profile-leader-seal" aria-hidden="true">✦</span></div>
-     <div class="profile-leader-content"><span class="profile-role-chip">KEPALA DESA</span><h3>Ahmad Firmansyah</h3><p class="profile-leader-subtitle">Kepala Desa Betro <span>•</span> Periode contoh 2025–2031</p><p class="profile-person-summary">Bertanggung jawab atas penyelenggaraan pemerintahan desa, pembinaan kemasyarakatan, pembangunan, serta koordinasi pelayanan bagi warga.</p><div class="profile-leader-tags"><span>Koordinasi pemerintahan</span><span>Pembangunan desa</span><span>Pelayanan warga</span></div><button class="profile-detail-button" type="button" data-detail-title="Tugas Kepala Desa" data-detail-text="Contoh tugas: menyelenggarakan pemerintahan desa, menetapkan kebijakan bersama BPD sesuai ketentuan, mengoordinasikan pembangunan, serta membina kehidupan masyarakat. Ganti nama dan rincian ini dengan informasi resmi Desa Betro.">Tugas &amp; Fungsi </button></div>
-    </article>
-   </section>
-
-   <section class="profile-directory-section" id="daftar-perangkat" aria-labelledby="daftar-perangkat-heading">
-    <div class="profile-section-heading profile-directory-heading">
-     <div><span class="profile-section-kicker">STRUKTUR ORGANISASI</span><h2 id="daftar-perangkat-heading">Perangkat Desa Lainnya</h2><p class="profile-heading-caption">Lihat nama, jabatan, dan ringkasan tanggung jawab masing-masing perangkat.</p></div>
+   <section class="village-officials-section" id="daftar-perangkat" aria-labelledby="daftar-perangkat-heading">
+    <div class="profile-section-heading village-officials-heading">
+     <div><span class="profile-section-kicker">STRUKTUR PEMERINTAHAN</span><h2 id="daftar-perangkat-heading">Pemerintah Desa Betro</h2></div>
      <label class="profile-search"><span class="sr-only">Cari nama atau jabatan</span><span aria-hidden="true">⌕</span><input type="search" id="profileSearch" placeholder="Cari nama atau jabatan..." autocomplete="off"/><kbd>/</kbd></label>
     </div>
+    <div class="village-officials-divider"></div>
 
-    <div class="profile-group" data-profile-group>
-     <div class="profile-group-heading"><span class="profile-group-number">01</span><div><h3>Sekretariat Desa</h3><p>Mengoordinasikan administrasi dan membantu kepala desa menjalankan pemerintahan.</p></div></div>
-     <div class="profile-card-grid">
-      <article class="profile-card" data-profile-card data-profile-name="Siti Rahmawati" data-profile-role="Sekretaris Desa">
-       <div class="profile-card-art art-rose"><span class="profile-dummy-label">DUMMY</span><div class="profile-avatar">SR</div><span class="profile-card-ornament"></span></div>
-       <div class="profile-card-content"><span class="profile-role-chip">SEKRETARIAT</span><h4>Siti Rahmawati</h4><p class="profile-card-role">Sekretaris Desa</p><p class="profile-person-summary">Mengelola koordinasi administrasi, tata naskah, arsip, dan dukungan kerja antarperangkat desa.</p><button class="profile-detail-button" type="button" data-detail-title="Tugas Sekretaris Desa" data-detail-text="Contoh tugas: membantu kepala desa dalam administrasi pemerintahan, koordinasi perangkat, pengelolaan surat dan arsip, serta penyusunan laporan. Sesuaikan dengan struktur resmi desa.">Tugas &amp; Fungsi </button></div>
+    @if($villageHead)
+     <section class="profile-leadership-section" aria-label="Kepala Desa">
+      <article class="village-official-card village-official-leader" data-profile-card data-profile-name="{{ $villageHead->nama }}" data-profile-role="{{ $villageHead->jabatan }}">
+       <div class="village-official-photo village-official-photo-leader">
+        @if($villageHead->foto)<img src="{{ asset('storage/'.$villageHead->foto) }}" alt="Foto {{ $villageHead->nama }}" loading="lazy">@else<span class="village-official-placeholder" aria-hidden="true">♙</span>@endif
+       </div>
+       <div class="village-official-copy"><span class="profile-role-chip">KEPALA DESA</span><h3>{{ $villageHead->nama }}</h3><p>{{ $villageHead->jabatan }}</p>@if($villageHead->deskripsi)<div class="profile-person-summary">{{ $villageHead->deskripsi }}</div>@endif</div>
       </article>
-     </div>
-    </div>
+     </section>
+    @endif
 
-    <div class="profile-group" data-profile-group>
-     <div class="profile-group-heading"><span class="profile-group-number">02</span><div><h3>Kepala Seksi (Kasi)</h3><p>Menjalankan urusan teknis pemerintahan, kesejahteraan, dan pelayanan.</p></div></div>
-     <div class="profile-card-grid">
-      <article class="profile-card" data-profile-card data-profile-name="Dimas Prasetyo" data-profile-role="Kasi Pemerintahan">
-       <div class="profile-card-art art-red"><span class="profile-dummy-label">DUMMY</span><div class="profile-avatar">DP</div><span class="profile-card-ornament"></span></div>
-       <div class="profile-card-content"><span class="profile-role-chip">KEPALA SEKSI</span><h4>Dimas Prasetyo</h4><p class="profile-card-role">Kasi Pemerintahan</p><p class="profile-person-summary">Membantu administrasi pemerintahan, data wilayah, ketertiban, dan pembinaan lembaga kemasyarakatan.</p><button class="profile-detail-button" type="button" data-detail-title="Tugas Kasi Pemerintahan" data-detail-text="Contoh tugas: membantu pelaksanaan administrasi pemerintahan, pengelolaan data kependudukan dan wilayah, serta pembinaan ketenteraman. Detail jabatan dapat berbeda mengikuti peraturan dan struktur desa.">Tugas &amp; Fungsi </button></div>
-      </article>
-      <article class="profile-card" data-profile-card data-profile-name="Nur Aisyah" data-profile-role="Kasi Kesejahteraan">
-       <div class="profile-card-art art-peach"><span class="profile-dummy-label">DUMMY</span><div class="profile-avatar">NA</div><span class="profile-card-ornament"></span></div>
-       <div class="profile-card-content"><span class="profile-role-chip">KEPALA SEKSI</span><h4>Nur Aisyah</h4><p class="profile-card-role">Kasi Kesejahteraan</p><p class="profile-person-summary">Mendukung program sosial, pemberdayaan warga, kegiatan kemasyarakatan, serta pembangunan kesejahteraan.</p><button class="profile-detail-button" type="button" data-detail-title="Tugas Kasi Kesejahteraan" data-detail-text="Contoh tugas: menyiapkan dan melaksanakan kegiatan pembangunan serta pemberdayaan masyarakat, sosial, pendidikan, kesehatan, dan kesejahteraan sesuai program desa.">Tugas &amp; Fungsi </button></div>
-      </article>
-      <article class="profile-card" data-profile-card data-profile-name="Eko Saputra" data-profile-role="Kasi Pelayanan">
-       <div class="profile-card-art art-plum"><span class="profile-dummy-label">DUMMY</span><div class="profile-avatar">ES</div><span class="profile-card-ornament"></span></div>
-       <div class="profile-card-content"><span class="profile-role-chip">KEPALA SEKSI</span><h4>Eko Saputra</h4><p class="profile-card-role">Kasi Pelayanan</p><p class="profile-person-summary">Mendukung pelayanan administrasi warga, fasilitasi kebutuhan masyarakat, dan peningkatan kualitas layanan.</p><button class="profile-detail-button" type="button" data-detail-title="Tugas Kasi Pelayanan" data-detail-text="Contoh tugas: membantu pelaksanaan pelayanan kepada masyarakat, fasilitasi administrasi publik, dan kegiatan peningkatan mutu layanan desa.">Tugas &amp; Fungsi </button></div>
-      </article>
+    @if($otherOfficials->isNotEmpty())
+     <div class="village-official-grid" aria-label="Perangkat desa lainnya">
+      @foreach($otherOfficials as $official)
+       <article class="village-official-card" data-profile-card data-profile-name="{{ $official->nama }}" data-profile-role="{{ $official->jabatan }}">
+        <div class="village-official-photo">
+         @if($official->foto)<img src="{{ asset('storage/'.$official->foto) }}" alt="Foto {{ $official->nama }}" loading="lazy">@else<span class="village-official-placeholder" aria-hidden="true">♙</span>@endif
+        </div>
+        <div class="village-official-copy"><h3>{{ $official->nama }}</h3><p>{{ $official->jabatan }}</p>@if($official->deskripsi)<div class="profile-person-summary">{{ $official->deskripsi }}</div>@endif</div>
+       </article>
+      @endforeach
      </div>
-    </div>
+    @endif
 
-    <div class="profile-group" data-profile-group>
-     <div class="profile-group-heading"><span class="profile-group-number">03</span><div><h3>Kepala Urusan (Kaur)</h3><p>Mendukung pengelolaan keuangan, tata usaha, umum, dan perencanaan desa.</p></div></div>
-     <div class="profile-card-grid">
-      <article class="profile-card" data-profile-card data-profile-name="Rina Kurniasih" data-profile-role="Kaur Keuangan">
-       <div class="profile-card-art art-gold"><span class="profile-dummy-label">DUMMY</span><div class="profile-avatar">RK</div><span class="profile-card-ornament"></span></div>
-       <div class="profile-card-content"><span class="profile-role-chip">KEPALA URUSAN</span><h4>Rina Kurniasih</h4><p class="profile-card-role">Kaur Keuangan</p><p class="profile-person-summary">Membantu penatausahaan keuangan desa, pencatatan transaksi, dan penyusunan laporan sesuai ketentuan.</p><button class="profile-detail-button" type="button" data-detail-title="Tugas Kaur Keuangan" data-detail-text="Contoh tugas: membantu pengelolaan administrasi keuangan, penatausahaan penerimaan dan pengeluaran, serta penyusunan laporan keuangan desa sesuai peraturan.">Tugas &amp; Fungsi </button></div>
-      </article>
-      <article class="profile-card" data-profile-card data-profile-name="Fajar Hidayat" data-profile-role="Kaur Tata Usaha dan Umum">
-       <div class="profile-card-art art-rose"><span class="profile-dummy-label">DUMMY</span><div class="profile-avatar">FH</div><span class="profile-card-ornament"></span></div>
-       <div class="profile-card-content"><span class="profile-role-chip">KEPALA URUSAN</span><h4>Fajar Hidayat</h4><p class="profile-card-role">Kaur Tata Usaha dan Umum</p><p class="profile-person-summary">Membantu administrasi perkantoran, surat-menyurat, arsip, inventaris, dan kebutuhan umum kantor desa.</p><button class="profile-detail-button" type="button" data-detail-title="Tugas Kaur Tata Usaha dan Umum" data-detail-text="Contoh tugas: menjalankan tata usaha, administrasi surat-menyurat, pengarsipan, inventaris aset, dan urusan umum kantor desa.">Tugas &amp; Fungsi </button></div>
-      </article>
-      <article class="profile-card" data-profile-card data-profile-name="Lestari Wulandari" data-profile-role="Kaur Perencanaan">
-       <div class="profile-card-art art-red"><span class="profile-dummy-label">DUMMY</span><div class="profile-avatar">LW</div><span class="profile-card-ornament"></span></div>
-       <div class="profile-card-content"><span class="profile-role-chip">KEPALA URUSAN</span><h4>Lestari Wulandari</h4><p class="profile-card-role">Kaur Perencanaan</p><p class="profile-person-summary">Mendukung penyusunan rencana kerja, pengumpulan data program, dan pemantauan kegiatan pembangunan.</p><button class="profile-detail-button" type="button" data-detail-title="Tugas Kaur Perencanaan" data-detail-text="Contoh tugas: membantu koordinasi perencanaan pembangunan, penyusunan dokumen perencanaan, pengumpulan data, dan evaluasi pelaksanaan program desa.">Tugas &amp; Fungsi </button></div>
-      </article>
-     </div>
-    </div>
-
-    <div class="profile-group" data-profile-group>
-     <div class="profile-group-heading"><span class="profile-group-number">04</span><div><h3>Kepala Dusun</h3><p>Membantu penyelenggaraan pemerintahan dan pelayanan pada wilayah dusun.</p></div></div>
-     <div class="profile-card-grid">
-      <article class="profile-card" data-profile-card data-profile-name="Arif Setiawan" data-profile-role="Kepala Dusun I">
-       <div class="profile-card-art art-plum"><span class="profile-dummy-label">DUMMY</span><div class="profile-avatar">AS</div><span class="profile-card-ornament"></span></div>
-       <div class="profile-card-content"><span class="profile-role-chip">KEPALA DUSUN</span><h4>Arif Setiawan</h4><p class="profile-card-role">Kepala Dusun I</p><p class="profile-person-summary">Menjadi penghubung pemerintah desa dengan warga dan membantu koordinasi kegiatan tingkat dusun.</p><button class="profile-detail-button" type="button" data-detail-title="Tugas Kepala Dusun I" data-detail-text="Contoh tugas: membantu pelaksanaan pemerintahan, pembangunan, pembinaan masyarakat, serta penyampaian kebutuhan warga di wilayah dusun. Nama dusun dan nomenklatur wilayah perlu disesuaikan.">Tugas &amp; Fungsi </button></div>
-      </article>
-      <article class="profile-card" data-profile-card data-profile-name="Budi Santoso" data-profile-role="Kepala Dusun II">
-       <div class="profile-card-art art-peach"><span class="profile-dummy-label">DUMMY</span><div class="profile-avatar">BS</div><span class="profile-card-ornament"></span></div>
-       <div class="profile-card-content"><span class="profile-role-chip">KEPALA DUSUN</span><h4>Budi Santoso</h4><p class="profile-card-role">Kepala Dusun II</p><p class="profile-person-summary">Membantu penyaluran informasi, pendataan warga, dan pelaksanaan kegiatan lingkungan.</p><button class="profile-detail-button" type="button" data-detail-title="Tugas Kepala Dusun II" data-detail-text="Contoh tugas: membantu pelayanan warga, pendataan wilayah, koordinasi kegiatan sosial, dan penyampaian aspirasi masyarakat. Nama dusun dan detail jabatan masih dummy.">Tugas &amp; Fungsi </button></div>
-      </article>
-      <article class="profile-card" data-profile-card data-profile-name="Wahyu Nugroho" data-profile-role="Kepala Dusun III">
-       <div class="profile-card-art art-gold"><span class="profile-dummy-label">DUMMY</span><div class="profile-avatar">WN</div><span class="profile-card-ornament"></span></div>
-       <div class="profile-card-content"><span class="profile-role-chip">KEPALA DUSUN</span><h4>Wahyu Nugroho</h4><p class="profile-card-role">Kepala Dusun III</p><p class="profile-person-summary">Mendampingi kebutuhan lingkungan warga dan berkoordinasi terkait kegiatan desa di wilayah dusun.</p><button class="profile-detail-button" type="button" data-detail-title="Tugas Kepala Dusun III" data-detail-text="Contoh tugas: mengoordinasikan kegiatan pemerintahan dan kemasyarakatan pada wilayah dusun, serta membantu menyampaikan kebutuhan dan aspirasi warga. Nama dusun dan detail jabatan masih dummy.">Tugas &amp; Fungsi </button></div>
-      </article>
-     </div>
-    </div>
-    <div class="profile-no-results" id="profileNoResults" hidden><span aria-hidden="true">⌕</span><h3>Profil tidak ditemukan</h3><p>Coba gunakan nama atau jabatan yang berbeda.</p></div>
+    <div class="profile-no-results" id="profileNoResults" @if($villageHead || $otherOfficials->isNotEmpty()) hidden @endif><span aria-hidden="true">♙</span><h3>Data perangkat desa belum tersedia</h3><p>Informasi perangkat desa akan ditampilkan setelah dipublikasikan oleh admin.</p></div>
    </section>
 
    <section class="profile-contact-cta">
@@ -178,9 +130,9 @@
       <label class="block text-xs font-bold text-gray-700 mb-1">
        Jenis Layanan / Pengaduan
       </label>
-      <select class="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-brand-600 focus:ring-1 focus:ring-brand-600 text-gray-700">
-       <option>
-        Pengajuan Surat Keterangan
+      <select required class="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-brand-600 focus:ring-1 focus:ring-brand-600 text-gray-700">
+       <option value="" disabled selected>
+        Pilih Jenis Layanan / Pengaduan
        </option>
        <option>
         Laporan Pengaduan / Aspirasi Warga

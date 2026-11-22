@@ -23,7 +23,7 @@
                 </span>
                 <span>
                     <strong>DESA BETRO</strong>
-                    <small>Kecamatan Kemlagi · Kabupaten Mojokerto</small>
+                    <small>Kecamatan Kemlagi - Kabupaten Mojokerto</small>
                 </span>
             </a>
 
