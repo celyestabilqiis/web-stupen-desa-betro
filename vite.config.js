@@ -10,7 +10,9 @@ export default defineConfig({
             refresh: true,
             fonts: [
                 bunny('Instrument Sans', {
+                    alias: 'sans',
                     weights: [400, 500, 600],
+                    optimizedFallbacks: false,
                 }),
             ],
         }),

@@ -3,7 +3,7 @@ tailwind.config = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['"Plus Jakarta Sans"', 'sans-serif']
+        sans: ['Instrument Sans', 'ui-sans-serif', 'system-ui', 'sans-serif']
       },
       colors: {
         brand: {

@@ -19,17 +19,17 @@ use Illuminate\View\View;
 class VillageInformationAdminController extends Controller
 {
     private const SECTIONS = [
-        'dusun' => ['title' => 'Pembagian Dusun', 'model' => VillageDusun::class, 'name' => 'nama_dusun', 'image' => 'foto', 'fields' => ['nama_dusun', 'jumlah_rw', 'jumlah_rt', 'luas_wilayah', 'deskripsi', 'foto', 'latitude', 'longitude', 'urutan', 'status']],
-        'geografi' => ['title' => 'Kondisi Geografis', 'model' => VillageGeography::class, 'name' => 'nama_informasi', 'image' => 'gambar', 'fields' => ['nama_informasi', 'nilai', 'satuan', 'deskripsi', 'gambar', 'urutan', 'status']],
-        'lahan' => ['title' => 'Penggunaan Lahan', 'model' => VillageLandUse::class, 'name' => 'nama_kategori', 'image' => 'gambar', 'fields' => ['nama_kategori', 'luas', 'satuan', 'deskripsi', 'gambar', 'urutan', 'status']],
+        'dusun' => ['title' => 'Pembagian Dusun', 'model' => VillageDusun::class, 'name' => 'nama_dusun', 'image' => 'foto', 'fields' => ['nama_dusun', 'jumlah_rw', 'jumlah_rt', 'luas_wilayah', 'deskripsi', 'foto', 'latitude', 'longitude', 'urutan', 'status', 'sumber_data', 'tahun_data']],
+        'geografi' => ['title' => 'Kondisi Geografis', 'model' => VillageGeography::class, 'name' => 'nama_informasi', 'image' => 'gambar', 'fields' => ['nama_informasi', 'nilai', 'satuan', 'deskripsi', 'gambar', 'urutan', 'status', 'sumber_data', 'tahun_data']],
+        'lahan' => ['title' => 'Penggunaan Lahan', 'model' => VillageLandUse::class, 'name' => 'nama_kategori', 'image' => 'gambar', 'fields' => ['nama_kategori', 'luas', 'satuan', 'deskripsi', 'gambar', 'urutan', 'status', 'sumber_data', 'tahun_data']],
     ];
 
     public function dashboard(): View
     {
         $profile = VillageProfile::query()->first();
-        $jumlahDusun = VillageDusun::query()->count();
-        $jumlahRw = VillageDusun::query()->sum('jumlah_rw');
-        $jumlahRt = VillageDusun::query()->sum('jumlah_rt');
+        $jumlahDusun = $profile?->jumlah_dusun ?? VillageDusun::query()->count();
+        $jumlahRw = $profile?->jumlah_rw ?? VillageDusun::query()->sum('jumlah_rw');
+        $jumlahRt = $profile?->jumlah_rt ?? VillageDusun::query()->sum('jumlah_rt');
         $jumlahLahan = VillageLandUse::query()->count();
         $missing = collect([
             'Identitas desa' => ! $profile || blank($profile->nama_desa) || blank($profile->kecamatan) || blank($profile->kabupaten),
@@ -57,6 +57,8 @@ class VillageInformationAdminController extends Controller
             'kode_pos' => ['nullable', 'string', 'max:10'], 'kode_wilayah' => ['nullable', 'string', 'max:32'],
             'luas_wilayah' => ['nullable', 'numeric', 'min:0'], 'latitude' => ['nullable', 'numeric', 'between:-90,90'],
             'longitude' => ['nullable', 'numeric', 'between:-180,180'], 'deskripsi' => ['nullable', 'string', 'max:10000'],
+            'jumlah_dusun' => ['nullable', 'integer', 'min:0'], 'jumlah_rw' => ['nullable', 'integer', 'min:0'], 'jumlah_rt' => ['nullable', 'integer', 'min:0'],
+            'sumber_data' => ['nullable', 'string', 'max:5000'], 'tahun_data' => ['nullable', 'integer', 'between:1900,2100'],
             'gambar' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:5120'],
         ]);
         $profile = VillageProfile::query()->firstOrNew();
@@ -80,6 +82,8 @@ class VillageInformationAdminController extends Controller
             'boundaries.*.arah' => ['required', Rule::in(VillageBoundary::DIRECTIONS), 'distinct'],
             'boundaries.*.wilayah_berbatasan' => ['nullable', 'string', 'max:255'],
             'boundaries.*.deskripsi' => ['nullable', 'string', 'max:2000'],
+            'boundaries.*.sumber_data' => ['nullable', 'string', 'max:5000'],
+            'boundaries.*.tahun_data' => ['nullable', 'integer', 'between:1900,2100'],
         ]);
         foreach ($validated['boundaries'] as $boundary) {
             if (blank($boundary['wilayah_berbatasan'] ?? null)) {
@@ -207,6 +211,7 @@ class VillageInformationAdminController extends Controller
             'nilai' => ['nullable', 'string', 'max:255'], 'satuan' => ['nullable', 'string', 'max:80'],
             'luas' => ['nullable', 'numeric', 'min:0'], 'luas_wilayah' => ['nullable', 'numeric', 'min:0'],
             'jumlah_rw' => ['nullable', 'integer', 'min:0'], 'jumlah_rt' => ['nullable', 'integer', 'min:0'],
+            'sumber_data' => ['nullable', 'string', 'max:5000'], 'tahun_data' => ['nullable', 'integer', 'between:1900,2100'],
             'latitude' => ['nullable', 'numeric', 'between:-90,90'], 'longitude' => ['nullable', 'numeric', 'between:-180,180'],
         ];
 

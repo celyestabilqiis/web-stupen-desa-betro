@@ -49,8 +49,11 @@ class VillageInformationTest extends TestCase
             'nama_desa' => 'Desa Betro', 'kecamatan' => 'Kemlagi', 'kabupaten' => 'Mojokerto',
             'provinsi' => 'Jawa Timur', 'kode_pos' => '61353', 'luas_wilayah' => 12.5,
             'latitude' => -7.2, 'longitude' => 112.4, 'deskripsi' => 'Deskripsi wilayah.',
+            'jumlah_dusun' => 2, 'jumlah_rw' => 4, 'jumlah_rt' => 16,
+            'sumber_data' => 'Dokumen uji', 'tahun_data' => 2020,
         ])->assertSessionHasNoErrors();
-        $this->assertDatabaseHas('village_profiles', ['nama_desa' => 'Desa Betro', 'luas_wilayah' => 12.5]);
+        $this->assertDatabaseHas('village_profiles', ['nama_desa' => 'Desa Betro', 'luas_wilayah' => 12.5, 'jumlah_dusun' => 2, 'jumlah_rw' => 4, 'jumlah_rt' => 16, 'tahun_data' => 2020]);
+        $this->actingAs($admin)->get(route('admin.wilayah.dashboard'))->assertOk()->assertSee('Jumlah Dusun')->assertSee('16');
 
         $boundaryData = [];
         foreach (VillageBoundary::DIRECTIONS as $direction) {
@@ -82,10 +85,12 @@ class VillageInformationTest extends TestCase
         $admin = User::factory()->create();
         $png = base64_decode('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+/pXcAAAAASUVORK5CYII=');
         $image = UploadedFile::fake()->createWithContent('wilayah.png', $png);
+        $sourceUrl = 'https://example.com/'.str_repeat('very-long-source-segment', 12);
+        $photoUrl = 'https://example.com/panen.jpeg';
 
         $this->actingAs($admin)->post(route('admin.wilayah.items.store', 'geografi'), [
             'nama_informasi' => 'Topografi', 'nilai' => 'Dataran rendah', 'deskripsi' => 'Kondisi umum.',
-            'urutan' => 1, 'status' => 1, 'gambar' => $image,
+            'urutan' => 1, 'status' => 1, 'gambar' => $image, 'sumber_data' => 'Sumber uji: '.$sourceUrl.' Foto kegiatan: '.$photoUrl, 'tahun_data' => 2024,
         ])->assertRedirect(route('admin.wilayah.items.index', 'geografi'));
         $geography = VillageGeography::query()->firstOrFail();
         Storage::disk('public')->assertExists($geography->gambar);
@@ -100,7 +105,7 @@ class VillageInformationTest extends TestCase
             'urutan' => 1, 'status' => 1,
         ])->assertRedirect(route('admin.wilayah.items.index', 'lahan'));
 
-        $this->get(route('pages.wilayah'))->assertOk()->assertSee('Topografi')->assertSee('Lahan Uji')->assertSee('conic-gradient');
+        $this->get(route('pages.wilayah'))->assertOk()->assertSee('Topografi')->assertSee('Sumber uji')->assertSee('Foto kegiatan:')->assertSee('Buka sumber ↗')->assertSee('Lihat foto kegiatan ↗')->assertSee('Data 2024')->assertSee('href="'.$sourceUrl.'" target="_blank" rel="noopener noreferrer"', false)->assertSee('href="'.$photoUrl.'" target="_blank" rel="noopener noreferrer"', false)->assertSee('overflow-wrap:anywhere', false)->assertSee('text-blue-700 underline', false)->assertSee('Lahan Uji')->assertSee('conic-gradient');
         $this->assertDatabaseHas('village_land_uses', ['id' => $land->id, 'luas' => 3.5]);
     }
 

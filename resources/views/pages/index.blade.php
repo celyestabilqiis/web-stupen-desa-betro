@@ -20,7 +20,7 @@
       </h1>
       <!-- Subtitle -->
       <p class="text-base sm:text-lg text-white/90 font-medium leading-relaxed mb-8 max-w-xl">
-       Pusat informasi, pelayanan, dan keterbukaan Pemerintah Desa Betro untuk masyarakat.
+       Pusat informasi, dan Dokumentasi Pemerintah Desa Betro untuk masyarakat.
       </p>
       
      </div>
