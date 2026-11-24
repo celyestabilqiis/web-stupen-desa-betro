@@ -82,16 +82,19 @@
                         <span>Pengaduan</span>
                     </a>
 
-                    <a href="{{ route('admin.statistik.index') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition {{ request()->routeIs('admin.statistik.*') ? 'bg-white/15 text-white shadow-xs' : 'text-white/80 hover:bg-white/10 hover:text-white' }}">
-                        <svg class="w-5 h-5 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 19V5m0 14h17M8 15v-4m5 4V7m5 8V9"/></svg>
-                        <span>Statistik Desa</span>
-                    </a>
-                    <div class="ml-12 -mt-1 mb-2 grid gap-1 text-xs text-white/70">
-                        <a class="rounded-lg px-2 py-1 hover:bg-white/10 hover:text-white" href="{{ route('admin.statistik.index') }}">Dashboard &amp; Data</a>
-                        <a class="rounded-lg px-2 py-1 hover:bg-white/10 hover:text-white" href="{{ route('admin.statistik.halaman.index') }}">Halaman Statistik</a>
-                        <a class="rounded-lg px-2 py-1 hover:bg-white/10 hover:text-white" href="{{ route('admin.statistik.kategori.index') }}">Kategori Statistik</a>
-                        <a class="rounded-lg px-2 py-1 hover:bg-white/10 hover:text-white" href="{{ route('admin.statistik.infografis') }}">Pengaturan Infografis</a>
-                        <a class="rounded-lg px-2 py-1 hover:bg-white/10 hover:text-white" href="{{ route('admin.statistik.tahun') }}">Pengaturan Tahun</a>
+                    <div class="rounded-xl bg-white/5 p-2">
+                        <a href="{{ route('admin.wilayah.dashboard') }}" class="flex items-center gap-3 px-2 py-2 rounded-lg text-sm font-semibold transition {{ request()->routeIs('admin.wilayah.*') ? 'bg-white/15 text-white' : 'text-white/80 hover:bg-white/10 hover:text-white' }}">
+                            <span class="text-gold">⌖</span><span>Informasi Wilayah</span>
+                        </a>
+                        <div class="ml-7 grid gap-1 text-xs text-white/70">
+                            <a class="rounded-lg px-2 py-1 hover:bg-white/10 hover:text-white" href="{{ route('admin.wilayah.dashboard') }}">Dashboard Wilayah</a>
+                            <a class="rounded-lg px-2 py-1 hover:bg-white/10 hover:text-white" href="{{ route('admin.wilayah.profile') }}">Gambaran Umum Desa</a>
+                            <a class="rounded-lg px-2 py-1 hover:bg-white/10 hover:text-white" href="{{ route('admin.wilayah.boundaries') }}">Batas Wilayah</a>
+                            <a class="rounded-lg px-2 py-1 hover:bg-white/10 hover:text-white" href="{{ route('admin.wilayah.items.index', 'dusun') }}">Pembagian Dusun</a>
+                            <a class="rounded-lg px-2 py-1 hover:bg-white/10 hover:text-white" href="{{ route('admin.wilayah.items.index', 'geografi') }}">Kondisi Geografis</a>
+                            <a class="rounded-lg px-2 py-1 hover:bg-white/10 hover:text-white" href="{{ route('admin.wilayah.items.index', 'lahan') }}">Penggunaan Lahan</a>
+                            <a class="rounded-lg px-2 py-1 hover:bg-white/10 hover:text-white" href="{{ route('admin.wilayah.map') }}">Peta Wilayah</a>
+                        </div>
                     </div>
 
                     <a href="{{ route('admin.accounts.index') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition {{ request()->routeIs('admin.accounts.*') ? 'bg-white/15 text-white shadow-xs' : 'text-white/80 hover:bg-white/10 hover:text-white' }}">

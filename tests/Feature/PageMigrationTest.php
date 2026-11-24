@@ -15,7 +15,7 @@ class PageMigrationTest extends TestCase
     {
         $pages = [
             'pages.home' => 'Selamat Datang di Website Resmi',
-            'pages.informasi' => 'Pusat Informasi',
+            'pages.informasi' => 'Kenali Desa Betro',
             'pages.potensi' => 'Potensi Lokal',
             'pages.profile' => 'Profil Perangkat Desa',
             'pages.pengaduan' => 'Pengaduan Desa Betro',
@@ -71,11 +71,11 @@ class PageMigrationTest extends TestCase
         $this->get(route('pages.home'))
             ->assertOk()
             ->assertSee('Informasi Desa')
-            ->assertSee('Statistik Desa')
+            ->assertSee('Informasi Wilayah Desa Betro')
             ->assertSee('Arsip &amp; Dokumentasi Desa', false)
             ->assertDontSee('2.630')
-            ->assertSee('—')
-            ->assertSee(route('pages.informasi.statistik'))
+            ->assertDontSee('Total Penduduk')
+            ->assertSee(route('pages.wilayah'))
             ->assertSee(route('pages.arsip.index'));
     }
 
@@ -97,7 +97,7 @@ class PageMigrationTest extends TestCase
         $this->get(route('pages.home'))
             ->assertOk()
             ->assertSee('id="navDropdownInformasi"', false)
-            ->assertSee(route('pages.informasi.statistik'))
+            ->assertSee(route('pages.wilayah'))
             ->assertSee(route('pages.arsip.index'))
             ->assertSee('id="mobileDropdownBtn"', false)
             ->assertSee('id="mobileSubmenu"', false);
@@ -107,8 +107,8 @@ class PageMigrationTest extends TestCase
     {
         $this->get(route('pages.informasi'))
             ->assertOk()
-            ->assertSee('Pusat Informasi')
-            ->assertSee('Arsip &amp; Dokumentasi Desa Terbaru', false)
+            ->assertSee('Kenali Desa Betro')
+            ->assertSee('Arsip &amp; Dokumentasi Desa', false)
             ->assertDontSee('id="statistik-desa"', false)
             ->assertDontSee('id="publikasi-dokumen"', false)
             ->assertDontSee('id="dokumentasi-kegiatan"', false);
@@ -116,10 +116,10 @@ class PageMigrationTest extends TestCase
 
     public function test_dedicated_informasi_subpages_render_correctly(): void
     {
-        $this->get(route('pages.informasi.statistik'))
+        $this->get(route('pages.wilayah'))
             ->assertOk()
-            ->assertSee('Statistik Desa Betro')
-            ->assertSee('Data statistik belum tersedia')
+            ->assertSee('Informasi Wilayah Desa Betro')
+            ->assertSee('Batas Wilayah')
             ->assertSee('site-header');
 
         $this->get(route('pages.arsip.index'))
@@ -226,8 +226,8 @@ class PageMigrationTest extends TestCase
 
         // Markup dropdown Informasi beserta item Statistik Desa dan Arsip & Dokumentasi Desa tetap ada
         $response->assertSee('id="navDropdownInformasi"', false);
-        $response->assertSee('href="'.route('pages.informasi.statistik').'"', false);
-        $response->assertSee('Statistik Desa');
+        $response->assertSee('href="'.route('pages.wilayah').'"', false);
+        $response->assertSee('Informasi Wilayah');
         $response->assertSee('href="'.route('pages.arsip.index').'"', false);
         $response->assertSee('Arsip &amp; Dokumentasi Desa', false);
 

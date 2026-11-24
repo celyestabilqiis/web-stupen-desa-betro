@@ -1,0 +1,9 @@
+@extends('admin.layouts.app')
+@section('title', 'Batas Wilayah')
+@section('page-title', 'Batas Wilayah')
+@section('page-desc', 'Lengkapi keterangan setiap arah batas administratif')
+@section('content')
+<form method="POST" action="{{ route('admin.wilayah.boundaries.update') }}" class="max-w-4xl space-y-5">@csrf @method('PUT')
+@foreach(\App\Models\VillageBoundary::DIRECTIONS as $index => $direction)@php($boundary = $boundaries->get($direction))<section class="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm"><h2 class="font-bold text-brand-800">{{ $direction }}</h2><input type="hidden" name="boundaries[{{ $index }}][arah]" value="{{ $direction }}"><label class="mt-3 block text-sm font-semibold text-gray-700">Berbatasan dengan<input name="boundaries[{{ $index }}][wilayah_berbatasan]" value="{{ old("boundaries.$index.wilayah_berbatasan", $boundary?->wilayah_berbatasan) }}" class="mt-1 w-full rounded-xl border-gray-300"></label><label class="mt-3 block text-sm font-semibold text-gray-700">Deskripsi tambahan<textarea name="boundaries[{{ $index }}][deskripsi]" rows="2" class="mt-1 w-full rounded-xl border-gray-300">{{ old("boundaries.$index.deskripsi", $boundary?->deskripsi) }}</textarea></label></section>@endforeach
+<button class="rounded-xl bg-brand-700 px-5 py-3 font-bold text-white">Simpan Batas Wilayah</button></form>
+@endsection

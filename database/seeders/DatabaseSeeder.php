@@ -27,6 +27,5 @@ class DatabaseSeeder extends Seeder
 
         $this->call(ArsipSeeder::class);
         $this->call(UmkmSeeder::class);
-        $this->call(StatisticSeeder::class);
     }
 }

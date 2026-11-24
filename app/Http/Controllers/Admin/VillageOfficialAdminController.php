@@ -9,6 +9,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
 class VillageOfficialAdminController extends Controller
@@ -33,7 +34,12 @@ class VillageOfficialAdminController extends Controller
 
     public function create(): View
     {
-        return view('admin.struktur-pemerintahan.form', ['official' => null]);
+        $existingHead = VillageOfficial::query()->where('is_kepala_desa', true)->first();
+
+        return view('admin.struktur-pemerintahan.form', [
+            'official' => null,
+            'existingHead' => $existingHead,
+        ]);
     }
 
     public function store(Request $request): RedirectResponse
@@ -49,9 +55,6 @@ class VillageOfficialAdminController extends Controller
         }
 
         DB::transaction(function () use ($data): void {
-            if ($data['is_kepala_desa'] && $data['status']) {
-                $this->releaseCurrentHead();
-            }
             VillageOfficial::create($data);
         });
 
@@ -65,17 +68,19 @@ class VillageOfficialAdminController extends Controller
 
     public function edit(VillageOfficial $villageOfficial): View
     {
-        return view('admin.struktur-pemerintahan.form', ['official' => $villageOfficial]);
+        $existingHead = VillageOfficial::query()->where('is_kepala_desa', true)->first();
+
+        return view('admin.struktur-pemerintahan.form', [
+            'official' => $villageOfficial,
+            'existingHead' => $existingHead,
+        ]);
     }
 
     public function update(Request $request, VillageOfficial $villageOfficial): RedirectResponse
     {
-        $data = $this->validated($request);
+        $data = $this->validated($request, $villageOfficial->id);
         $data['status'] = $request->boolean('status');
         $data['is_kepala_desa'] = $request->boolean('is_kepala_desa');
-        if ($villageOfficial->is_kepala_desa && ! $data['is_kepala_desa'] && mb_strtolower($data['jabatan']) === 'kepala desa') {
-            $data['jabatan'] = 'Perangkat Desa';
-        }
         if ($data['is_kepala_desa']) {
             $data['jabatan'] = 'Kepala Desa';
         }
@@ -85,9 +90,6 @@ class VillageOfficialAdminController extends Controller
         }
 
         DB::transaction(function () use ($data, $villageOfficial): void {
-            if ($data['is_kepala_desa'] && $data['status']) {
-                $this->releaseCurrentHead($villageOfficial->id);
-            }
             $villageOfficial->update($data);
         });
         $this->deleteUnusedPhoto($request->hasFile('foto') ? $oldPhoto : null);
@@ -105,19 +107,38 @@ class VillageOfficialAdminController extends Controller
     }
 
     /** @return array<string, mixed> */
-    private function validated(Request $request): array
+    private function validated(Request $request, ?int $exceptId = null): array
     {
-        if (! $request->boolean('status')) {
-            if ($request->boolean('is_kepala_desa') && mb_strtolower((string) $request->input('jabatan')) === 'kepala desa') {
-                $request->merge(['jabatan' => 'Perangkat Desa']);
+        $isSettingAsHead = $request->boolean('is_kepala_desa')
+            || mb_strtolower(trim((string) $request->input('jabatan'))) === 'kepala desa';
+
+        if ($isSettingAsHead) {
+            $existingHead = VillageOfficial::query()
+                ->where(function (Builder $query): void {
+                    $query->where('is_kepala_desa', true)
+                        ->orWhereRaw('LOWER(jabatan) = ?', ['kepala desa']);
+                })
+                ->when($exceptId, fn (Builder $query) => $query->where('id', '!=', $exceptId))
+                ->first();
+
+            if ($existingHead) {
+                throw ValidationException::withMessages([
+                    'is_kepala_desa' => 'Jabatan Kepala Desa sudah terisi. Silakan edit data Kepala Desa yang sudah ada atau hapus data sebelumnya sebelum menambahkan Kepala Desa yang baru.',
+                    'jabatan' => 'Jabatan Kepala Desa sudah terisi. Silakan edit data Kepala Desa yang sudah ada atau hapus data sebelumnya sebelum menambahkan Kepala Desa yang baru.',
+                ]);
             }
-            $request->merge(['is_kepala_desa' => false]);
-        }
-        if ($request->boolean('is_kepala_desa')) {
-            $request->merge(['jabatan' => 'Kepala Desa']);
+
+            $request->merge([
+                'is_kepala_desa' => true,
+                'jabatan' => 'Kepala Desa',
+            ]);
+        } else {
+            $request->merge([
+                'is_kepala_desa' => false,
+            ]);
         }
 
-        $data = $request->validate([
+        return $request->validate([
             'nama' => ['required', 'string', 'max:255'],
             'jabatan' => ['required', 'string', 'max:255'],
             'deskripsi' => ['nullable', 'string', 'max:3000'],
@@ -125,23 +146,11 @@ class VillageOfficialAdminController extends Controller
             'urutan' => ['required', 'integer', 'min:0', 'max:65535'],
             'status' => ['required', 'boolean'],
             'is_kepala_desa' => ['required', 'boolean'],
+        ], [
+            'foto.max' => 'Ukuran foto maksimal 5 MB.',
+            'foto.mimes' => 'Format foto harus berupa JPG, JPEG, PNG, atau WebP.',
+            'foto.image' => 'Berkas harus berupa gambar.',
         ]);
-
-        return $data;
-    }
-
-    private function releaseCurrentHead(?int $exceptId = null): void
-    {
-        $currentHeads = VillageOfficial::query()->where('is_kepala_desa', true)->where('status', true)
-            ->when($exceptId, fn (Builder $query) => $query->whereKeyNot($exceptId))->lockForUpdate()->get();
-        foreach ($currentHeads as $currentHead) {
-            $currentHead->is_kepala_desa = false;
-            $currentHead->kepala_desa_slot = null;
-            if (mb_strtolower($currentHead->jabatan) === 'kepala desa') {
-                $currentHead->jabatan = 'Perangkat Desa';
-            }
-            $currentHead->save();
-        }
     }
 
     private function deleteUnusedPhoto(?string $photo): void

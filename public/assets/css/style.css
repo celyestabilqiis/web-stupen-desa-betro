@@ -731,75 +731,6 @@ body[data-page="home"] .site-header.nav-scrolled a>div:nth-child(2) span:first-c
   background: rgba(255, 255, 255, .96) !important;
 }
 
-/* Baris statistik, lalu sambutan kepala desa */
-.quick-stats {
-  position: relative;
-  z-index: 3;
-  max-width: 1240px;
-  margin: -40px auto 0;
-  padding: 0 24px;
-}
-
-.quick-stats-inner {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  background: #fff;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-card);
-  box-shadow: var(--shadow-card);
-  overflow: hidden;
-}
-
-.quick-stat {
-  display: flex;
-  align-items: center;
-  gap: 13px;
-  min-height: 100px;
-  padding: 21px 23px;
-  border-right: 1px solid var(--color-border);
-}
-
-.quick-stat:last-child {
-  border-right: 0;
-}
-
-.quick-stat-icon {
-  display: flex;
-  flex: 0 0 43px;
-  width: 43px;
-  height: 43px;
-  align-items: center;
-  justify-content: center;
-  border-radius: 13px;
-  color: var(--color-primary);
-  background: var(--color-sage);
-  font-size: 24px;
-  font-weight: 800;
-}
-
-.quick-stat strong {
-  display: block;
-  color: var(--color-primary);
-  font-size: clamp(1.2rem, 2vw, 1.65rem);
-  line-height: 1.3;
-  letter-spacing: -.04em;
-}
-
-.quick-stat span:not(.quick-stat-icon) {
-  display: block;
-  color: var(--color-muted);
-  font-size: 11px;
-  font-weight: 600;
-  margin-top: 3px;
-}
-
-.dummy-data-note {
-  color: #a48f93;
-  text-align: right;
-  font-size: 10px;
-  padding: 8px 8px 0;
-}
-
 .welcome-section {
   padding: 64px 24px 72px;
   background: linear-gradient(180deg, #fff 0%, #fff6f6 100%);
@@ -1286,21 +1217,6 @@ body[data-page="informasi"] .information-hero {
   box-shadow: 0 24px 48px rgba(81, 18, 29, .14);
 }
 
-body[data-page="informasi"] .information-stats {
-  position: relative;
-  z-index: 4;
-  box-shadow: 0 16px 38px rgba(81, 18, 29, .09);
-}
-
-body[data-page="informasi"] .information-stat {
-  transition: .25s ease;
-}
-
-body[data-page="informasi"] .information-stat:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 24px rgba(81, 18, 29, .08);
-}
-
 body[data-page="informasi"] .section-separator>.grid>div {
   border-color: #eed9dc !important;
   border-radius: 18px !important;
@@ -1672,18 +1588,6 @@ footer .text-brand-300\/60 {
     gap: 18px !important;
   }
 
-  .quick-stat {
-    padding: 18px 14px;
-    gap: 10px;
-  }
-
-  .quick-stat-icon {
-    width: 38px;
-    height: 38px;
-    flex-basis: 38px;
-    font-size: 20px;
-  }
-
   .welcome-inner {
     gap: 32px;
   }
@@ -1742,43 +1646,6 @@ footer .text-brand-300\/60 {
   .site-header a .text-xs {
     max-width: 190px;
     font-size: 9px !important;
-  }
-
-  .quick-stats {
-    margin-top: -24px;
-    padding: 0 15px;
-  }
-
-  .quick-stats-inner {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .quick-stat {
-    min-height: 85px;
-    padding: 15px 12px;
-    border-bottom: 1px solid var(--color-border);
-  }
-
-  .quick-stat:nth-child(2) {
-    border-right: 0;
-  }
-
-  .quick-stat:nth-child(3),
-  .quick-stat:nth-child(4) {
-    border-bottom: 0;
-  }
-
-  .quick-stat strong {
-    font-size: 1.25rem;
-  }
-
-  .quick-stat span:not(.quick-stat-icon) {
-    font-size: 10px;
-  }
-
-  .dummy-data-note {
-    font-size: 9px;
-    text-align: center;
   }
 
   .home-main #beranda {
@@ -1870,7 +1737,7 @@ footer .text-brand-300\/60 {
 }
 
 
-/* Halaman Informasi: hero pedesaan dan ringkasan statistik */
+/* Halaman Informasi: hero dan konten desa */
 .information-page {
   padding-top: 16px !important;
 }
@@ -2060,94 +1927,6 @@ footer .text-brand-300\/60 {
   box-shadow: 0 10px 24px rgba(0, 0, 0, .10);
 }
 
-.information-stats {
-  position: relative;
-  z-index: 3;
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  max-width: 1120px;
-  margin: -42px auto 44px;
-  border: 1px solid var(--color-border);
-  border-radius: 18px;
-  background: #fff;
-  box-shadow: var(--shadow-card-hover);
-  overflow: hidden;
-}
-
-.information-stat {
-  min-height: 96px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 13px;
-  padding: 18px;
-  border-right: 1px solid var(--color-border);
-  text-decoration: none;
-  transition: background .2s ease, transform .2s ease;
-}
-
-.information-stat:last-child {
-  border-right: 0;
-}
-
-.information-stat-link:hover {
-  background: #fff8f8;
-}
-
-.information-stat-icon {
-  width: 42px;
-  height: 42px;
-  flex: 0 0 42px;
-  display: grid;
-  place-items: center;
-  border-radius: 12px;
-  color: #fff;
-  background: var(--color-primary);
-}
-
-.information-stat-icon svg {
-  width: 20px;
-  height: 20px;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 1.8;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-.information-stat:nth-child(2) .information-stat-icon {
-  background: #2f73b6
-}
-
-.information-stat:nth-child(3) .information-stat-icon {
-  background: #df6f93
-}
-
-.information-stat:nth-child(4) .information-stat-icon {
-  background: #2d8d7a
-}
-
-.information-stat strong {
-  display: block;
-  color: var(--color-primary);
-  font-size: 24px;
-  line-height: 1
-}
-
-.information-stat span {
-  display: block;
-  margin-top: 7px;
-  color: var(--color-muted);
-  font-size: 10px;
-  font-weight: 700
-}
-
-.information-stat .information-stat-small {
-  color: var(--color-primary-deep);
-  font-size: 13px;
-  line-height: 1.2
-}
-
 .information-page .section-separator {
   transition: border-color .2s ease;
 }
@@ -2227,36 +2006,6 @@ body[data-page="informasi"] .information-agenda-heading p,
   margin: 5px 0 0;
   color: #75686a;
   font-size: 12px;
-}
-
-body[data-page="informasi"] .information-stat-grid>div,
-body[data-page="informasi"] .information-stat-grid>a,
-.information-stat-grid>div,
-.information-stat-grid>a {
-  border-width: 1px !important;
-  border-color: #eadfe0 !important;
-  box-shadow: 0 8px 22px rgba(81, 18, 29, .055) !important;
-}
-
-body[data-page="informasi"] .information-stat-grid>*:nth-child(1),
-.information-stat-grid>*:nth-child(1) {
-  background: linear-gradient(145deg, #fff, #fff3f4) !important;
-  border-left: 4px solid #b02b43 !important;
-}
-
-body[data-page="informasi"] .information-stat-grid>*:nth-child(2),
-.information-stat-grid>*:nth-child(2) {
-  border-left: 4px solid #3f7eaa !important;
-}
-
-body[data-page="informasi"] .information-stat-grid>*:nth-child(3),
-.information-stat-grid>*:nth-child(3) {
-  border-left: 4px solid #c05a79 !important;
-}
-
-body[data-page="informasi"] .information-stat-grid>*:nth-child(4),
-.information-stat-grid>*:nth-child(4) {
-  border-left: 4px solid #b08a45 !important;
 }
 
 body[data-page="informasi"] .information-document-grid a,
@@ -2358,24 +2107,6 @@ body[data-page="informasi"] .section-separator h2 {
   .information-hero p {
     font-size: 13px !important
   }
-
-  .information-stats {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    margin: -24px 8px 34px
-  }
-
-  .information-stat {
-    min-height: 82px;
-    padding: 14px
-  }
-
-  .information-stat:nth-child(2) {
-    border-right: 0
-  }
-
-  .information-stat:nth-child(-n+2) {
-    border-bottom: 1px solid var(--color-border)
-  }
 }
 
 @media (max-width:480px) {
@@ -2386,20 +2117,6 @@ body[data-page="informasi"] .section-separator h2 {
 
   .information-hero-actions a {
     width: 100%
-  }
-
-  .information-stat {
-    justify-content: flex-start
-  }
-
-  .information-stat-icon {
-    width: 38px;
-    height: 38px;
-    flex-basis: 38px
-  }
-
-  .information-stat strong {
-    font-size: 20px
   }
 }
 
@@ -3213,146 +2930,10 @@ body[data-page="informasi"] .section-separator h2 {
   margin: 0 0 70px;
 }
 
-.village-officials-heading {
-  margin-bottom: 18px;
-}
-
-.village-officials-divider {
-  height: 1px;
-  margin-bottom: 30px;
-  background: #e9e5e5;
-}
-
-.village-officials-section .profile-leadership-section {
-  display: flex;
-  justify-content: center;
-  margin: 0 0 28px;
-}
-
-.village-official-card {
-  min-width: 0;
-  overflow: hidden;
-  border: 1px solid var(--color-border);
-  border-radius: 16px;
-  background: #fff;
-  box-shadow: 0 8px 24px rgba(81, 18, 29, .045);
+.profile-no-results {
   text-align: center;
-}
-
-.village-official-leader {
-  width: min(100%, 360px);
-  border-color: #e8d8b3;
-}
-
-.village-official-photo {
-  display: grid;
-  place-items: center;
-  width: 100%;
-  height: 170px;
-  overflow: hidden;
-  background: linear-gradient(145deg, #fbf7f5, #f2e6e3);
-}
-
-.village-official-photo-leader {
-  height: 230px;
-  background: linear-gradient(145deg, #fbf5e9, #f2e2bd);
-}
-
-.village-official-photo img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
-
-.village-official-placeholder {
-  display: grid;
-  place-items: center;
-  width: 76px;
-  height: 76px;
-  border-radius: 50%;
-  background: #fff;
-  color: var(--color-primary);
-  font-size: 38px;
-  box-shadow: 0 5px 20px rgba(81, 18, 29, .08);
-}
-
-.village-official-copy {
-  min-height: 105px;
-  padding: 17px 15px 19px;
-}
-
-.village-official-copy h3 {
-  margin: 0;
-  color: var(--color-primary-dark);
-  font-size: 16px;
-  line-height: 1.35;
-  font-weight: 900;
-}
-
-.village-official-copy p {
-  margin: 5px 0 0;
-  color: var(--color-primary);
-  font-size: 12px;
-  font-weight: 700;
-}
-
-.village-official-leader .village-official-copy h3 {
-  margin-top: 8px;
-  font-size: 19px;
-}
-
-.village-official-copy .profile-person-summary {
-  min-height: 0;
-  margin: 10px 0 0;
+  padding: 48px 16px;
   color: var(--color-muted);
-  font-size: 12px;
-  font-weight: 400;
-}
-
-.village-official-grid {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 18px;
-}
-
-@media (max-width: 900px) {
-  .village-official-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-@media (max-width: 480px) {
-  .village-official-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 11px;
-  }
-
-  .village-official-photo {
-    height: 145px;
-  }
-
-  .village-official-photo-leader {
-    height: 210px;
-  }
-
-  .village-official-copy {
-    min-height: 96px;
-    padding: 13px 9px 15px;
-  }
-
-  .village-official-copy h3 {
-    font-size: 13px;
-  }
-
-  .village-official-copy p {
-    font-size: 11px;
-  }
-}
-
-@media (max-width: 350px) {
-  .village-official-grid {
-    grid-template-columns: 1fr;
-  }
 }
 
 .profile-no-results h3 {
