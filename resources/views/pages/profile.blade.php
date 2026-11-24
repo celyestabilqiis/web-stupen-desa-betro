@@ -47,42 +47,72 @@
    </section>
 
    <section class="village-officials-section" id="daftar-perangkat" aria-labelledby="daftar-perangkat-heading">
-    <div class="profile-section-heading village-officials-heading">
-     <div><span class="profile-section-kicker">STRUKTUR PEMERINTAHAN</span><h2 id="daftar-perangkat-heading">Pemerintah Desa Betro</h2></div>
-     <label class="profile-search"><span class="sr-only">Cari nama atau jabatan</span><span aria-hidden="true">⌕</span><input type="search" id="profileSearch" placeholder="Cari nama atau jabatan..." autocomplete="off"/><kbd>/</kbd></label>
-    </div>
-    <div class="village-officials-divider"></div>
-
-    @if($villageHead)
-     <section class="profile-leadership-section" aria-label="Kepala Desa">
-      <article class="village-official-card village-official-leader" data-profile-card data-profile-name="{{ $villageHead->nama }}" data-profile-role="{{ $villageHead->jabatan }}">
-       <div class="village-official-photo village-official-photo-leader">
-        @if($villageHead->foto)<img src="{{ asset('storage/'.$villageHead->foto) }}" alt="Foto {{ $villageHead->nama }}" loading="lazy">@else<span class="village-official-placeholder" aria-hidden="true">♙</span>@endif
-       </div>
-       <div class="village-official-copy"><span class="profile-role-chip">KEPALA DESA</span><h3>{{ $villageHead->nama }}</h3><p>{{ $villageHead->jabatan }}</p>@if($villageHead->deskripsi)<div class="profile-person-summary">{{ $villageHead->deskripsi }}</div>@endif</div>
-      </article>
-     </section>
-    @endif
-
-    @if($otherOfficials->isNotEmpty())
-     <div class="village-official-grid" aria-label="Perangkat desa lainnya">
-      @foreach($otherOfficials as $official)
-       <article class="village-official-card" data-profile-card data-profile-name="{{ $official->nama }}" data-profile-role="{{ $official->jabatan }}">
-        <div class="village-official-photo">
-         @if($official->foto)<img src="{{ asset('storage/'.$official->foto) }}" alt="Foto {{ $official->nama }}" loading="lazy">@else<span class="village-official-placeholder" aria-hidden="true">♙</span>@endif
-        </div>
-        <div class="village-official-copy"><h3>{{ $official->nama }}</h3><p>{{ $official->jabatan }}</p>@if($official->deskripsi)<div class="profile-person-summary">{{ $official->deskripsi }}</div>@endif</div>
-       </article>
-      @endforeach
+    <!-- Container Utama -->
+    <div class="bg-white border border-gray-200 rounded-2xl p-6 sm:p-8 md:p-10 shadow-xs max-w-6xl mx-auto">
+     <!-- Judul Bagian -->
+     <div class="text-center pb-5 border-b border-gray-200 mb-8 sm:mb-10">
+      <h2 id="daftar-perangkat-heading" class="text-2xl sm:text-3xl font-extrabold tracking-tight text-gray-900 uppercase">
+       PEMERINTAH DESA BETRO
+      </h2>
      </div>
-    @endif
 
-    <div class="profile-no-results" id="profileNoResults" @if($villageHead || $otherOfficials->isNotEmpty()) hidden @endif><span aria-hidden="true">♙</span><h3>Data perangkat desa belum tersedia</h3><p>Informasi perangkat desa akan ditampilkan setelah dipublikasikan oleh admin.</p></div>
-   </section>
+     <!-- Kartu Kepala Desa (Posisi Khusus: Paling Atas dan Tepat di Tengah Horizontal) -->
+     @if($villageHead)
+      <div class="flex justify-center mb-8 sm:mb-10">
+       <article class="bg-white border border-gray-200 rounded-xl p-5 sm:p-6 flex flex-col items-center text-center shadow-xs hover:shadow-md hover:border-gray-300 transition-all duration-200 w-full max-w-[280px] sm:max-w-[300px]" data-profile-card data-profile-name="{{ $villageHead->nama }}" data-profile-role="{{ $villageHead->jabatan }}">
+        <!-- Foto Kepala Desa: Sedikit lebih menonjol dibandingkan foto perangkat lainnya -->
+        <div class="w-[120px] h-[150px] sm:w-[130px] sm:h-[162px] rounded-lg overflow-hidden bg-gray-50 border border-gray-100 flex items-center justify-center shrink-0 mb-4 shadow-2xs">
+         @if($villageHead->foto)
+          <img src="{{ asset('storage/'.$villageHead->foto) }}" alt="Foto {{ $villageHead->nama }}" class="w-full h-full object-contain" loading="lazy">
+         @else
+          <span class="grid h-full w-full place-items-center bg-brand-50 text-4xl text-brand-700" aria-hidden="true">♙</span>
+         @endif
+        </div>
+        <!-- Nama: Huruf tebal, HURUF KAPITAL, rata tengah -->
+        <h3 class="font-bold text-gray-900 uppercase text-base sm:text-lg leading-snug break-words max-w-full text-center">
+         {{ mb_strtoupper($villageHead->nama) }}
+        </h3>
+        <!-- Jabatan: Tepat di bawah nama, font lebih kecil, warna lembut, rata tengah -->
+        <p class="text-xs sm:text-sm text-gray-500 font-medium text-center mt-1.5">
+         Kepala Desa
+        </p>
+       </article>
+      </div>
+     @endif
 
-   <section class="profile-contact-cta">
-    <div><span class="profile-section-kicker">POTENSI DESA</span><h2>Mencari informasi UMKM atau izin usaha?</h2><p>Kunjungi halaman Potensi Desa untuk mengenal UMKM lokal dan melihat informasi izin usaha.</p></div>
-    <div class="profile-cta-actions"><a class="profile-button-light" href="{{ route('pages.potensi') }}">Potensi Desa </a><a class="profile-button-outline" href="{{ route('pages.home') }}#informasi">Lihat Layanan </a></div>
+     <!-- Grid Kartu Perangkat Desa Lainnya: 4 Kolom Desktop, 2 Tablet, 1-2 Smartphone -->
+     @if($otherOfficials->isNotEmpty())
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6" aria-label="Perangkat desa lainnya">
+       @foreach($otherOfficials as $official)
+        <article class="bg-white border border-gray-200 rounded-xl p-4 sm:p-5 flex flex-col items-center text-center h-full hover:shadow-md hover:border-gray-300 transition-all duration-200" data-profile-card data-profile-name="{{ $official->nama }}" data-profile-role="{{ $official->jabatan }}">
+         <!-- Foto Perangkat Desa: Ukuran seragam portrait 100x125 px, object-fit contain -->
+         <div class="w-[100px] h-[125px] rounded-lg overflow-hidden bg-gray-50 border border-gray-100 flex items-center justify-center shrink-0 mb-3 shadow-2xs">
+          @if($official->foto)
+           <img src="{{ asset('storage/'.$official->foto) }}" alt="Foto {{ $official->nama }}" class="w-full h-full object-contain" loading="lazy">
+          @else
+           <span class="grid h-full w-full place-items-center bg-brand-50 text-3xl text-brand-700" aria-hidden="true">♙</span>
+          @endif
+         </div>
+         <!-- Nama: Huruf tebal, HURUF KAPITAL, rata tengah -->
+         <h3 class="font-bold text-gray-900 uppercase text-sm sm:text-base leading-snug break-words max-w-full text-center">
+          {{ mb_strtoupper($official->nama) }}
+         </h3>
+         <!-- Jabatan: Tepat di bawah nama, ukuran lebih kecil, warna lebih lembut, rata tengah -->
+         <p class="text-xs text-gray-500 font-medium text-center mt-1">
+          {{ $official->jabatan }}
+         </p>
+        </article>
+       @endforeach
+      </div>
+     @endif
+
+     <!-- Tampilan kosong jika belum ada data -->
+     <div class="profile-no-results text-center py-12 text-gray-500" id="profileNoResults" @if($villageHead || $otherOfficials->isNotEmpty()) hidden @endif>
+      <span class="text-4xl block mb-2" aria-hidden="true">♙</span>
+      <h3 class="text-base font-bold text-gray-700">Data perangkat desa belum tersedia</h3>
+      <p class="text-xs sm:text-sm text-gray-500 mt-1">Informasi perangkat desa akan ditampilkan setelah dipublikasikan oleh admin.</p>
+     </div>
+    </div>
    </section>
   </main>
 @endsection

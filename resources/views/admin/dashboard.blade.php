@@ -2,7 +2,7 @@
 
 @section('title', 'Dashboard')
 @section('page-title', 'Dashboard')
-@section('page-desc', 'Ringkasan statistik data dan arsip Desa Betro')
+@section('page-desc', 'Ringkasan arsip dan layanan administrasi Desa Betro')
 
 @section('page-actions')
     <a href="{{ route('admin.arsip.create') }}" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-brand-700 hover:bg-brand-800 text-white font-bold text-xs shadow-sm transition">
