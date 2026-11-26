@@ -311,6 +311,38 @@ class VillageOfficialManagementTest extends TestCase
         Storage::disk('public')->assertMissing($official->foto);
     }
 
+    public function test_homepage_uses_active_head_identity_and_photo_and_allows_photo_removal(): void
+    {
+        Storage::fake('public');
+        $admin = User::factory()->create();
+        $photo = UploadedFile::fake()->createWithContent('head.png', $this->pixelPng());
+        $this->actingAs($admin)->post(route('admin.struktur-pemerintahan.store'), $this->officialData([
+            'nama' => 'Siti Kepala',
+            'jabatan' => 'Kepala Desa',
+            'is_kepala_desa' => 1,
+            'foto' => $photo,
+        ]))->assertRedirect(route('admin.struktur-pemerintahan.index'));
+
+        $head = VillageOfficial::query()->firstOrFail();
+        $photoPath = $head->foto;
+        $this->get(route('pages.home'))
+            ->assertOk()
+            ->assertSee('Siti Kepala')
+            ->assertSee('Foto Siti Kepala')
+            ->assertDontSee('Ahmad Pratama');
+
+        $this->actingAs($admin)->put(route('admin.struktur-pemerintahan.update', $head), $this->officialData([
+            'nama' => 'Siti Kepala',
+            'jabatan' => 'Kepala Desa',
+            'is_kepala_desa' => 1,
+            'hapus_foto' => 1,
+        ]))->assertRedirect(route('admin.struktur-pemerintahan.show', $head));
+
+        $this->assertNull($head->fresh()->foto);
+        Storage::disk('public')->assertMissing($photoPath);
+        $this->get(route('pages.home'))->assertOk()->assertSee('Siti Kepala')->assertSee('aria-label="Inisial Kepala Desa"', false);
+    }
+
     public function test_unsupported_photo_files_are_rejected(): void
     {
         $admin = User::factory()->create();

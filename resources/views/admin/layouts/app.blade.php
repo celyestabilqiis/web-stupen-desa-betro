@@ -77,21 +77,6 @@
                         <span>Pengaduan</span>
                     </a>
 
-                    <div class="rounded-xl bg-white/5 p-2">
-                        <a href="{{ route('admin.wilayah.dashboard') }}" class="flex items-center gap-3 px-2 py-2 rounded-lg text-sm font-semibold transition {{ request()->routeIs('admin.wilayah.*') ? 'bg-white/15 text-white' : 'text-white/80 hover:bg-white/10 hover:text-white' }}">
-                            <span class="text-gold">⌖</span><span>Informasi Wilayah</span>
-                        </a>
-                        <div class="ml-7 grid gap-1 text-xs text-white/70">
-                            <a class="rounded-lg px-2 py-1 hover:bg-white/10 hover:text-white" href="{{ route('admin.wilayah.dashboard') }}">Dashboard Wilayah</a>
-                            <a class="rounded-lg px-2 py-1 hover:bg-white/10 hover:text-white" href="{{ route('admin.wilayah.profile') }}">Gambaran Umum Desa</a>
-                            <a class="rounded-lg px-2 py-1 hover:bg-white/10 hover:text-white" href="{{ route('admin.wilayah.boundaries') }}">Batas Wilayah</a>
-                            <a class="rounded-lg px-2 py-1 hover:bg-white/10 hover:text-white" href="{{ route('admin.wilayah.items.index', 'dusun') }}">Pembagian Dusun</a>
-                            <a class="rounded-lg px-2 py-1 hover:bg-white/10 hover:text-white" href="{{ route('admin.wilayah.items.index', 'geografi') }}">Kondisi Geografis</a>
-                            <a class="rounded-lg px-2 py-1 hover:bg-white/10 hover:text-white" href="{{ route('admin.wilayah.items.index', 'lahan') }}">Penggunaan Lahan</a>
-                            <a class="rounded-lg px-2 py-1 hover:bg-white/10 hover:text-white" href="{{ route('admin.wilayah.map') }}">Peta Wilayah</a>
-                        </div>
-                    </div>
-
                     <a href="{{ route('admin.accounts.index') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition {{ request()->routeIs('admin.accounts.*') ? 'bg-white/15 text-white shadow-xs' : 'text-white/80 hover:bg-white/10 hover:text-white' }}">
                         <svg class="w-5 h-5 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>

@@ -799,6 +799,11 @@ body[data-page="home"] .site-header.nav-scrolled a>div:nth-child(2) span:first-c
   font-weight: 800;
 }
 
+.welcome-head-photo {
+  object-fit: cover;
+  object-position: center 25%;
+}
+
 .welcome-signature strong,
 .welcome-signature span:not(.welcome-avatar) {
   display: block;
@@ -1218,26 +1223,30 @@ body[data-page="informasi"] .information-hero {
   box-shadow: 0 24px 48px rgba(81, 18, 29, .14);
 }
 
-body[data-page="informasi"] .section-separator>.grid>div {
+body[data-page="informasi"] .information-archive-card {
+  min-width: 0;
   border-color: #eed9dc !important;
   border-radius: 18px !important;
   box-shadow: 0 9px 24px rgba(81, 18, 29, .055) !important;
   transition: .25s ease;
 }
 
-body[data-page="informasi"] .section-separator>.grid>div:hover {
+body[data-page="informasi"] .information-archive-card:hover {
   transform: translateY(-6px);
   box-shadow: 0 18px 36px rgba(81, 18, 29, .11) !important;
 }
 
-body[data-page="informasi"] .section-separator img {
+body[data-page="informasi"] .information-archive-card img {
   filter: saturate(.9);
   transition: .35s ease;
 }
 
-body[data-page="informasi"] .section-separator>.grid>div:hover img {
+body[data-page="informasi"] .information-archive-card:hover img {
   filter: saturate(1.05);
-  transform: scale(1.025);
+}
+
+body[data-page="informasi"] .information-latest {
+  border-bottom: 0;
 }
 
 @media (max-width:768px) {
@@ -2459,6 +2468,15 @@ body[data-page="informasi"] .section-separator h2 {
   border-radius: 17px;
   background: white;
   box-shadow: var(--shadow-card);
+}
+
+.welcome-section .information-section-kicker {
+  display: inline-block;
+  margin-bottom: 12px;
+  color: var(--color-primary);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .13em;
 }
 
 .profile-stat-icon {

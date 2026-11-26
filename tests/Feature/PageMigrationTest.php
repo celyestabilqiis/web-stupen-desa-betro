@@ -66,16 +66,14 @@ class PageMigrationTest extends TestCase
             ->assertSee('&copy; 2026 Desa Betro. All rights reserved.', false);
     }
 
-    public function test_information_content_is_available_in_the_homepage_section(): void
+    public function test_homepage_keeps_archive_content_without_the_region_section(): void
     {
         $this->get(route('pages.home'))
             ->assertOk()
-            ->assertSee('Informasi Desa')
-            ->assertSee('Informasi Wilayah Desa Betro')
             ->assertSee('Arsip &amp; Dokumentasi Desa', false)
+            ->assertDontSee('Informasi Wilayah')
             ->assertDontSee('2.630')
             ->assertDontSee('Total Penduduk')
-            ->assertSee(route('pages.wilayah'))
             ->assertSee(route('pages.arsip.index'));
     }
 
@@ -92,12 +90,13 @@ class PageMigrationTest extends TestCase
             ->assertDontSee('id="publikasi-dokumen"', false);
     }
 
-    public function test_navbar_has_informasi_dropdown_links(): void
+    public function test_navbar_keeps_archive_link_and_removes_region_link(): void
     {
         $this->get(route('pages.home'))
             ->assertOk()
             ->assertSee('id="navDropdownInformasi"', false)
-            ->assertSee(route('pages.wilayah'))
+            ->assertDontSee('/informasi/wilayah')
+            ->assertDontSee('Informasi Wilayah')
             ->assertSee(route('pages.arsip.index'))
             ->assertSee('id="mobileDropdownBtn"', false)
             ->assertSee('id="mobileSubmenu"', false);
@@ -114,14 +113,8 @@ class PageMigrationTest extends TestCase
             ->assertDontSee('id="dokumentasi-kegiatan"', false);
     }
 
-    public function test_dedicated_informasi_subpages_render_correctly(): void
+    public function test_archives_page_remains_available(): void
     {
-        $this->get(route('pages.wilayah'))
-            ->assertOk()
-            ->assertSee('Informasi Wilayah Desa Betro')
-            ->assertSee('Batas Wilayah')
-            ->assertSee('site-header');
-
         $this->get(route('pages.arsip.index'))
             ->assertOk()
             ->assertSee('Arsip')
@@ -130,12 +123,14 @@ class PageMigrationTest extends TestCase
 
     public function test_legacy_redirects_work(): void
     {
-        $this->get('/layanan')->assertRedirect('/#informasi');
+        $this->get('/layanan')->assertRedirect('/');
         $this->get('/pemerintahan')->assertRedirect('/potensi#izin-usaha');
         $this->get('/informasi/dokumen')->assertRedirect('/arsip-dokumentasi');
         $this->get('/informasi/kegiatan')->assertRedirect('/arsip-dokumentasi');
         $this->get('/publikasi-dokumen')->assertRedirect('/arsip-dokumentasi');
         $this->get('/dokumentasi-kegiatan')->assertRedirect('/arsip-dokumentasi');
+        $this->get('/informasi/wilayah')->assertRedirect('/');
+        $this->get('/admin/informasi-wilayah/peta')->assertRedirect('/');
     }
 
     public function test_admin_panel_button_visibility_in_navbar(): void
@@ -224,10 +219,10 @@ class PageMigrationTest extends TestCase
         $response->assertSee('nav-link-active', false);
         $response->assertSee('href="'.route('pages.pengaduan').'"', false);
 
-        // Markup dropdown Informasi beserta item Statistik Desa dan Arsip & Dokumentasi Desa tetap ada
+        // Menu Informasi tetap memuat arsip dan dokumentasi.
         $response->assertSee('id="navDropdownInformasi"', false);
-        $response->assertSee('href="'.route('pages.wilayah').'"', false);
-        $response->assertSee('Informasi Wilayah');
+        $response->assertDontSee('/informasi/wilayah');
+        $response->assertDontSee('Informasi Wilayah');
         $response->assertSee('href="'.route('pages.arsip.index').'"', false);
         $response->assertSee('Arsip &amp; Dokumentasi Desa', false);
 

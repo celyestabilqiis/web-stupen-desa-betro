@@ -60,7 +60,6 @@
     home: '/',
     potensi: '/potensi',
     informasi: '/informasi',
-    'informasi-wilayah': '/informasi/wilayah',
     'informasi-dokumen': '/arsip-dokumentasi',
     'informasi-kegiatan': '/arsip-dokumentasi',
     'arsip-dokumentasi': '/arsip-dokumentasi',
@@ -80,8 +79,7 @@
       const href = link.getAttribute('href') || '';
       const linkUrl = new URL(href, window.location.href);
       const isParentInformasi = isInformasiPage && linkUrl.pathname === '/informasi' && !link.closest('.dropdown-menu') && !link.closest('#mobileSubmenu');
-      const isSubmenuItem = (page === 'informasi-wilayah' && linkUrl.pathname === '/informasi/wilayah') ||
-                            ((page === 'arsip-dokumentasi' || page === 'arsip-detail') && linkUrl.pathname === '/arsip-dokumentasi');
+      const isSubmenuItem = (page === 'arsip-dokumentasi' || page === 'arsip-detail') && linkUrl.pathname === '/arsip-dokumentasi';
 
       const isCurrent = (linkUrl.pathname === activePath || isParentInformasi || isSubmenuItem) && (page !== 'home' || linkUrl.hash === '#beranda');
       if (isCurrent) {

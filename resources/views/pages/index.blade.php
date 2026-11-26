@@ -7,8 +7,7 @@
 @section('content')
 <main class="home-main">
    <section class="relative min-h-screen flex items-center overflow-hidden bg-gray-900" id="beranda">
-    <!-- Landscape Background Image: Rice fields & mountain view -->
-    <img alt="Persawahan Desa Betro" class="absolute inset-0 w-full h-full object-cover object-center" src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&amp;w=1920&amp;auto=format&amp;fit=crop"/>
+    <img alt="Persawahan Desa Betro" class="absolute inset-0 w-full h-full object-cover object-center" src="{{ asset('assets/images/potensi-sawah.jpg') }}"/>
     <!-- Smooth Gradient Overlay -->
     <div class="absolute inset-0 hero-overlay"></div>
     <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 sm:pt-36 lg:pt-40 pb-20 lg:pb-24 w-full z-10">
@@ -34,45 +33,27 @@
        Selamat datang di portal digital Desa Betro
       </h2>
       <p>
-       Portal ini menjadi ruang informasi bersama untuk mengenal desa, mengikuti kegiatan, mengakses layanan, dan melihat informasi publik dengan lebih mudah. Kami terus berupaya menghadirkan pelayanan yang terbuka, ramah, dan dekat dengan kebutuhan warga.
+       {{ $villageHead?->deskripsi ?: 'Portal ini menjadi ruang informasi bersama untuk mengenal desa, mengikuti kegiatan, mengakses layanan, dan melihat informasi publik dengan lebih mudah. Kami terus berupaya menghadirkan pelayanan yang terbuka, ramah, dan dekat dengan kebutuhan warga.' }}
       </p>
       <p class="welcome-greeting">
        Salam hangat, gotong royong, dan semangat membangun desa.
       </p>
       <div class="welcome-signature">
-       <span class="welcome-avatar">
-        AP
-       </span>
+       @if($villageHead?->foto)
+        <img class="welcome-avatar welcome-head-photo" src="{{ asset('storage/'.$villageHead->foto) }}" alt="Foto {{ $villageHead->nama }}" loading="lazy">
+       @else
+        @php($headInitials = $villageHead ? collect(preg_split('/\s+/', trim($villageHead->nama)))->take(2)->map(fn ($part) => mb_strtoupper(mb_substr($part, 0, 1)))->implode('') : null)
+        <span class="welcome-avatar" aria-label="Inisial Kepala Desa">{{ $headInitials ?: '♙' }}</span>
+       @endif
        <div>
-        <strong>
-         Ahmad Pratama
-        </strong>
-        <span>
-         Kepala Desa
-        </span>
+        <strong>{{ $villageHead?->nama ?: 'Kepala Desa belum tersedia' }}</strong>
+        <span>{{ $villageHead?->jabatan ?: 'Pemerintah Desa Betro' }}</span>
        </div>
       </div>
      </div>
      <div class="welcome-visual">
-      <img alt="Hamparan persawahan sebagai ilustrasi suasana pedesaan" loading="lazy" src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&amp;w=1100&amp;auto=format&amp;fit=crop"/>
-      
-      </div>
+      <img alt="Hamparan persawahan sebagai ilustrasi suasana pedesaan" loading="lazy" src="{{ asset('assets/images/potensi-sawah.jpg') }}"/>
      </div>
-    </div>
-   </section>
-   <section class="py-16 lg:py-20 bg-white" id="informasi">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-     <div class="mb-8">
-      <div class="accent-pill"></div>
-      <h2 class="text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight">Informasi Desa</h2>
-      <p class="text-sm sm:text-base text-gray-500 font-medium mt-1">Kenali kondisi geografis dan administrasi Desa Betro.</p>
-     </div>
-     <a class="card-hover block rounded-2xl border border-gray-100 bg-gray-50 p-6 sm:p-8 shadow-sm transition group" href="{{ route('pages.wilayah') }}">
-      <span class="text-3xl" aria-hidden="true">⌖</span>
-      <h3 class="mt-3 text-xl font-extrabold text-gray-900 group-hover:text-brand-700">Informasi Wilayah Desa Betro</h3>
-      <p class="mt-2 max-w-2xl text-sm leading-6 text-gray-600">Lihat gambaran umum desa, batas administratif, pembagian dusun, kondisi geografis, penggunaan lahan, dan peta wilayah.</p>
-      <span class="mt-4 inline-block text-sm font-bold text-brand-700">Jelajahi informasi wilayah →</span>
-     </a>
     </div>
    </section>
    <section class="py-16 lg:py-20 bg-gray-50/70 border-y border-gray-100" id="arsip-dokumentasi">
