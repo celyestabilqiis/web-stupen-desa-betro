@@ -104,6 +104,12 @@
                 <p class="mt-0.5 text-gray-400">Foto akan ditampilkan dengan proporsi portrait tanpa terpotong (object-fit: contain).</p>
             </div>
         </div>
+        @if($official?->foto)
+            <label class="mt-3 inline-flex items-center gap-2 text-sm font-medium text-rose-700">
+                <input type="checkbox" name="hapus_foto" id="remove-official-photo" value="1" @checked(old('hapus_foto')) class="rounded border-rose-300 text-rose-600 focus:ring-rose-500">
+                Hapus foto saat disimpan
+            </label>
+        @endif
     </div>
 
     <div class="grid gap-4 sm:grid-cols-2">
@@ -173,6 +179,7 @@
     const photoInput = document.getElementById('official-photo');
     const photoPreview = document.getElementById('official-photo-preview');
     const photoPlaceholder = document.getElementById('official-photo-placeholder');
+    const removePhotoCheckbox = document.getElementById('remove-official-photo');
     const roleInput = document.getElementById('official-role');
     const headCheckbox = document.getElementById('official-head');
     const roleWarning = document.getElementById('role-warning');
@@ -185,6 +192,19 @@
             photoPreview.src = URL.createObjectURL(photo);
             photoPreview.classList.remove('hidden');
             photoPlaceholder.classList.add('hidden');
+            if (removePhotoCheckbox) removePhotoCheckbox.checked = false;
+        });
+    }
+
+    if (removePhotoCheckbox) {
+        removePhotoCheckbox.addEventListener('change', () => {
+            if (removePhotoCheckbox.checked && !photoInput.files.length) {
+                photoPreview.classList.add('hidden');
+                photoPlaceholder.classList.remove('hidden');
+            } else if (!removePhotoCheckbox.checked && !photoInput.files.length) {
+                photoPreview.classList.remove('hidden');
+                photoPlaceholder.classList.add('hidden');
+            }
         });
     }
 

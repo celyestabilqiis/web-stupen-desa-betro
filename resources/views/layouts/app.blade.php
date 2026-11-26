@@ -47,9 +47,8 @@
       $isHome = request()->routeIs('pages.home');
       $isProfile = request()->routeIs('pages.profile');
       $isPotensi = request()->routeIs('pages.potensi');
-      $isWilayah = request()->routeIs('pages.wilayah') || request()->is('informasi/wilayah*');
       $isArsip = request()->routeIs('pages.arsip.*') || request()->is('arsip-dokumentasi*');
-      $isInformasi = request()->routeIs('pages.informasi', 'pages.wilayah', 'pages.arsip.*') || request()->is('informasi*', 'arsip-dokumentasi*');
+      $isInformasi = request()->routeIs('pages.informasi', 'pages.arsip.*') || request()->is('informasi*', 'arsip-dokumentasi*');
       $isPengaduan = request()->routeIs('pages.pengaduan');
      @endphp
      <nav class="hidden lg:flex items-center gap-7 text-sm font-semibold text-white/90" data-primary-nav="true">
@@ -75,7 +74,6 @@
        <!-- Dropdown Menu Desktop -->
        <div class="dropdown-menu absolute left-0 top-full pt-1.5 w-60 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto group-focus-within:opacity-100 group-focus-within:pointer-events-auto transition-all duration-150 ease-out transform group-hover:translate-y-0 -translate-y-1 z-50">
         <div class="bg-white rounded-lg shadow-md border border-gray-100 py-1.5 ring-1 ring-black/5">
-         <a href="{{ route('pages.wilayah') }}" class="dropdown-item {{ $isWilayah ? 'nav-link-active' : '' }}" @if($isWilayah) aria-current="page" @endif>Informasi Wilayah</a>
          <a href="{{ route('pages.arsip.index') }}" class="dropdown-item {{ $isArsip ? 'nav-link-active' : '' }}" @if($isArsip) aria-current="page" @endif>Arsip &amp; Dokumentasi Desa</a>
         </div>
        </div>
@@ -131,9 +129,6 @@
      </div>
      <!-- Submenu List Mobile -->
      <div class="{{ $isInformasi ? '' : 'hidden' }} pl-3 pr-1 py-1.5 space-y-1 bg-brand-50/30 rounded-lg mt-1 border-l-2 border-brand-400" id="mobileSubmenu">
-      <a class="block px-3.5 py-2 rounded-md text-sm {{ $isWilayah ? 'bg-white text-brand-700 font-bold nav-link-active shadow-2xs' : 'font-medium text-gray-700 hover:text-white hover:bg-white' }} transition" href="{{ route('pages.wilayah') }}" @if($isWilayah) aria-current="page" @endif>
-       Informasi Wilayah
-      </a>
       <a class="block px-3.5 py-2 rounded-md text-sm {{ $isArsip ? 'bg-white text-brand-700 font-bold nav-link-active shadow-2xs' : 'font-medium text-gray-700 hover:text-white hover:bg-white' }} transition" href="{{ route('pages.arsip.index') }}" @if($isArsip) aria-current="page" @endif>
        Arsip &amp; Dokumentasi Desa
       </a>

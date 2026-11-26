@@ -4,13 +4,11 @@ use App\Http\Controllers\Admin\AdminAccountController;
 use App\Http\Controllers\Admin\ArsipAdminController;
 use App\Http\Controllers\Admin\PengaduanAdminController;
 use App\Http\Controllers\Admin\UmkmAdminController;
-use App\Http\Controllers\Admin\VillageInformationAdminController;
 use App\Http\Controllers\Admin\VillageOfficialAdminController;
 use App\Http\Controllers\ArsipController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\UmkmController;
-use App\Http\Controllers\VillageInformationController;
 use App\Models\Arsip;
 use App\Models\Umkm;
 use Illuminate\Support\Facades\Route;
@@ -45,22 +43,6 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     Route::get('/pengaduan/{pengaduan}/foto/{photo}', [PengaduanAdminController::class, 'photo'])->whereNumber('photo')->name('pengaduan.photo');
     Route::post('/pengaduan/{pengaduan}/catatan', [PengaduanAdminController::class, 'addNote'])->name('pengaduan.notes.store');
     Route::resource('pengaduan', PengaduanAdminController::class);
-    Route::prefix('informasi-wilayah')->name('wilayah.')->controller(VillageInformationAdminController::class)->group(function (): void {
-        Route::get('/', 'dashboard')->name('dashboard');
-        Route::get('/gambaran-umum', 'profile')->name('profile');
-        Route::put('/gambaran-umum', 'updateProfile')->name('profile.update');
-        Route::get('/batas-wilayah', 'boundaries')->name('boundaries');
-        Route::put('/batas-wilayah', 'updateBoundaries')->name('boundaries.update');
-        Route::get('/peta', 'map')->name('map');
-        Route::put('/peta', 'updateMap')->name('map.update');
-        Route::get('/{section}', 'index')->whereIn('section', ['dusun', 'geografi', 'lahan'])->name('items.index');
-        Route::get('/{section}/create', 'create')->whereIn('section', ['dusun', 'geografi', 'lahan'])->name('items.create');
-        Route::post('/{section}', 'store')->whereIn('section', ['dusun', 'geografi', 'lahan'])->name('items.store');
-        Route::get('/{section}/{item}', 'show')->whereIn('section', ['dusun', 'geografi', 'lahan'])->whereNumber('item')->name('items.show');
-        Route::get('/{section}/{item}/edit', 'edit')->whereIn('section', ['dusun', 'geografi', 'lahan'])->whereNumber('item')->name('items.edit');
-        Route::put('/{section}/{item}', 'update')->whereIn('section', ['dusun', 'geografi', 'lahan'])->whereNumber('item')->name('items.update');
-        Route::delete('/{section}/{item}', 'destroy')->whereIn('section', ['dusun', 'geografi', 'lahan'])->whereNumber('item')->name('items.destroy');
-    });
     Route::resource('arsip', ArsipAdminController::class)->except(['show']);
     Route::resource('umkm', UmkmAdminController::class)->except(['show']);
     Route::resource('struktur-pemerintahan', VillageOfficialAdminController::class)
@@ -80,7 +62,6 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
 Route::controller(PageController::class)->group(function () {
     Route::get('/', 'home')->name('pages.home');
     Route::get('/informasi', 'informasi')->name('pages.informasi');
-    Route::get('/informasi/wilayah', [VillageInformationController::class, 'index'])->name('pages.wilayah');
     Route::get('/potensi', 'potensi')->name('pages.potensi');
     Route::get('/profile', 'profile')->name('pages.profile');
     Route::get('/pengaduan', 'pengaduan')->name('pages.pengaduan');
@@ -99,7 +80,9 @@ Route::redirect('/informasi/dokumen', '/arsip-dokumentasi', 301);
 Route::redirect('/informasi/kegiatan', '/arsip-dokumentasi', 301);
 Route::redirect('/publikasi-dokumen', '/arsip-dokumentasi', 301);
 Route::redirect('/dokumentasi-kegiatan', '/arsip-dokumentasi', 301);
-Route::redirect('/informasi/statistik/{legacy?}', '/informasi/wilayah', 301)->where('legacy', '.*');
-Route::redirect('/statistik-desa', '/informasi/wilayah', 301);
-Route::redirect('/layanan', '/#informasi', 301);
+Route::redirect('/informasi/statistik/{legacy?}', '/', 301)->where('legacy', '.*');
+Route::redirect('/statistik-desa', '/', 301);
+Route::redirect('/informasi/wilayah', '/', 301);
+Route::redirect('/admin/informasi-wilayah/{path?}', '/', 301)->where('path', '.*');
+Route::redirect('/layanan', '/', 301);
 Route::redirect('/pemerintahan', '/potensi#izin-usaha', 301);

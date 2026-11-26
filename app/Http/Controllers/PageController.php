@@ -24,7 +24,12 @@ class PageController extends Controller
             ->limit(4)
             ->get();
 
-        return view('pages.index', compact('arsipTerbaru'));
+        $villageHead = VillageOfficial::query()
+            ->where('status', true)
+            ->where('is_kepala_desa', true)
+            ->first();
+
+        return view('pages.index', compact('arsipTerbaru', 'villageHead'));
     }
 
     public function informasi(): View
@@ -34,7 +39,7 @@ class PageController extends Controller
             ->with('penulis')
             ->orderByDesc('tanggal')
             ->orderByDesc('created_at')
-            ->limit(5)
+            ->limit(3)
             ->get();
 
         return view('pages.informasi', compact('arsipTerbaru'));

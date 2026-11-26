@@ -85,14 +85,17 @@ class VillageOfficialAdminController extends Controller
             $data['jabatan'] = 'Kepala Desa';
         }
         $oldPhoto = $villageOfficial->foto;
+        $removePhoto = $request->boolean('hapus_foto') && ! $request->hasFile('foto');
         if ($request->hasFile('foto')) {
             $data['foto'] = $request->file('foto')->store('perangkat-desa', 'public');
+        } elseif ($removePhoto) {
+            $data['foto'] = null;
         }
 
         DB::transaction(function () use ($data, $villageOfficial): void {
             $villageOfficial->update($data);
         });
-        $this->deleteUnusedPhoto($request->hasFile('foto') ? $oldPhoto : null);
+        $this->deleteUnusedPhoto(($request->hasFile('foto') || $removePhoto) ? $oldPhoto : null);
 
         return redirect()->route('admin.struktur-pemerintahan.show', $villageOfficial)->with('success', 'Data perangkat desa berhasil diperbarui.');
     }
@@ -143,6 +146,7 @@ class VillageOfficialAdminController extends Controller
             'jabatan' => ['required', 'string', 'max:255'],
             'deskripsi' => ['nullable', 'string', 'max:3000'],
             'foto' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:5120'],
+            'hapus_foto' => ['nullable', 'boolean'],
             'urutan' => ['required', 'integer', 'min:0', 'max:65535'],
             'status' => ['required', 'boolean'],
             'is_kepala_desa' => ['required', 'boolean'],

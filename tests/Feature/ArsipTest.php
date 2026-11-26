@@ -26,6 +26,45 @@ class ArsipTest extends TestCase
             ->assertDontSee('Arsip Draft Rahasia');
     }
 
+    public function test_information_page_shows_three_latest_published_archives_with_details_link(): void
+    {
+        foreach (range(1, 4) as $day) {
+            Arsip::factory()->terbit()->create([
+                'judul' => 'Publikasi terbaru '.$day,
+                'kategori' => $day % 2 === 0 ? 'arsip_desa' : 'dokumentasi_desa',
+                'tanggal' => sprintf('2026-10-%02d', $day),
+                'ringkasan' => 'Ringkasan publikasi.',
+            ]);
+        }
+        Arsip::factory()->create(['judul' => 'Draft tidak dipublikasikan']);
+
+        $response = $this->get(route('pages.informasi'))
+            ->assertOk()
+            ->assertSee('Arsip & Dokumentasi Terbaru')
+            ->assertSee('Temukan informasi, dokumen, dan dokumentasi terbaru mengenai kegiatan Pemerintah Desa Betro.')
+            ->assertSee('Lihat Semua Arsip & Dokumentasi')
+            ->assertSee('Publikasi terbaru 4')
+            ->assertSee('Arsip Desa')
+            ->assertSee('Dokumentasi Desa')
+            ->assertDontSee('Publikasi terbaru 1')
+            ->assertDontSee('Draft tidak dipublikasikan');
+
+        $response->assertSeeInOrder(['Publikasi terbaru 4', 'Publikasi terbaru 3', 'Publikasi terbaru 2'])
+            ->assertSee('href="'.route('pages.arsip.index').'"', false);
+        $this->assertSame(3, substr_count($response->getContent(), 'Baca Selengkapnya'));
+    }
+
+    public function test_information_page_shows_an_informative_empty_state_without_published_archives(): void
+    {
+        Arsip::factory()->create(['judul' => 'Draft internal']);
+
+        $this->get(route('pages.informasi'))
+            ->assertOk()
+            ->assertSee('Belum ada arsip atau dokumentasi yang dipublikasikan.')
+            ->assertDontSee('Draft internal')
+            ->assertSee('Lihat Semua Arsip & Dokumentasi');
+    }
+
     public function test_arsip_list_filters_by_kategori(): void
     {
         Arsip::factory()->terbit()->arsipDesa()->create(['judul' => 'Laporan APBDes Terbaru']);
